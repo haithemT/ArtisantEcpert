@@ -8,6 +8,7 @@ use Application\Storage\AuthStorage;
 use User\Model\User;
 use Application\Form\LoginForm;
 
+
 /**
  * Login controller
  */
@@ -16,6 +17,7 @@ class LoginController extends AbstractActionController
     protected $storage;
     protected $authservice; 
     protected $userTable; 
+    protected $translator;
     
     public function loginAction()
     {
@@ -43,16 +45,16 @@ class LoginController extends AbstractActionController
                 if ($result->isValid()) {
                    $identityRow = (array) $this->getAuthService()->getAdapter()->getResultRowObject();
                     if($identityRow['enabled'] == 0) {
-                        $messages = $this->translate('Your username is disabled. Please contact an administrator.');
+                        $messages = $this->translator()->translate('Your username is disabled. Please contact an administrator.');
                         return new ViewModel([
-                            'error' => $this->translate('Account disabled'),
+                            'error' => $this->translator()->translate('Account disabled'),
                             'form'	=> $form,
                             'messages' => $messages
                         ]);
                     }elseif($identityRow['locked'] == 1){
-                        $messages = $this->translate('Your username is locked. Please contact an administrator.');
+                        $messages = $this->translator()->translate('Your username is locked. Please contact an administrator.');
                         return new ViewModel([
-                            'error' => $this->translate('Account locked'),
+                            'error' => $this->translator()->translate('Account locked'),
                             'form'	=> $form,
                             'messages' => $messages
                         ]);
@@ -73,7 +75,7 @@ class LoginController extends AbstractActionController
                 }else{
                     $message = 'The username or email is not valid!';
                     return new ViewModel(array(
-                        'error' => $this->translate('Your authentication credentials are not valid'),
+                        'error' => $this->translator()->translate('Your authentication credentials are not valid'),
                         'form'	=> $form,
                         'messages' => $messages
                     ));
@@ -82,7 +84,7 @@ class LoginController extends AbstractActionController
         }
         
         return new ViewModel(array(
-            'error' => $this->translate('Your authentication credentials are not valid'),
+            'error' => $this->translator()->translate('Your authentication credentials are not valid'),
             'form'	=> $form,
             'messages' => $messages
         ));

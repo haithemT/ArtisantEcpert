@@ -25,10 +25,7 @@ return [
         ],
         'aliases' => [
             Adapter\Adapter::class  => Adapter\AdapterInterface::class,
-            'translator'            => TranslatorInterface::class,
-        ],
-        'invokables' => [
-            'translate' => \Zend\I18n\View\Helper\Translate::class
+            'translator' => TranslatorInterface::class,
         ]
     ],
     'translator' => [
@@ -36,12 +33,11 @@ return [
         'translation_file_patterns' => [
             [
                 'type'     => 'gettext',
-                'base_dir' => __DIR__ . '/../languages',
+                'base_dir' => getcwd() .  '/data/languages/',
                 'pattern'  => '%s.mo',
             ],
         ],
     ],
-
     'db' => [
             'driver' => 'Pdo',
             'dsn' => 'mysql:dbname=artisandb;hostname=localhost',
@@ -49,4 +45,9 @@ return [
                     PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
             ],
     ],
+    'view_helpers' => [
+        'invokables' => [
+            'translate' => \Zend\I18n\View\Helper\Translate::class
+        ]
+    ]
 ];

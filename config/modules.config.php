@@ -17,8 +17,8 @@ return [
     'Zend\Router',
     'Zend\Validator',
     'Zend\Mvc\Plugin\Identity',
-    'Zend\I18n',
     'Zend\Mvc\I18n',
+    'Zend\I18n','User',
     'Application',
-    'User',
+    
 ];

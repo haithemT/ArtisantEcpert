@@ -11,19 +11,13 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
 use Zend\Authentication\AuthenticationService;
-use Zend\Validator\AbstractValidator;
+use Application\Service\Factory\AppControllerFactory;
+use Application\Storage\AuthStorage;
 
 class Module
 {
-    const VERSION = '3.0.3-dev';
-    
-    public function onBootstrap(MvcEvent $e)
-    {
-        $translator=$e->getApplication()->getServiceManager()->get('translator');
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
-    }
+    const VERSION = '0.1-dev';
+
     public function getConfig()
     {
         return include __DIR__ . '/../config/module.config.php';
@@ -31,9 +25,9 @@ class Module
 
     public function getServiceConfig()
     {
-        return array(
-            'factories'=>array(
-                'Application\Storage\AuthStorage' => function($sm) {
+        return [
+            'factories'=>[
+                AuthStorage::class => function($sm) {
                     return new \login\Storage\AuthStorage('Session');
                 },
                 'AuthService' => function($sm) {
@@ -46,10 +40,15 @@ class Module
                         'user','username','password');
                     $authService = new AuthenticationService();
                     $authService->setAdapter($dbTableAuthAdapter);
-                    $authService->setStorage($sm->get('Application\Storage\AuthStorage'));
+                    $authService->setStorage($sm->get(AuthStorage::class));
                     return $authService;
                 },
-            ),
-        );
+            ],
+            'controllers' => [
+                'abstract_factories' => [
+                    AppControllerFactory::class,
+                ]
+            ],           
+        ];
     }
 }

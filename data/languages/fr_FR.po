@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zf app\n"
-"POT-Creation-Date: 2017-04-16 14:49+0100\n"
-"PO-Revision-Date: 2017-04-16 14:50+0100\n"
+"POT-Creation-Date: 2017-04-20 20:49+0100\n"
+"PO-Revision-Date: 2017-04-20 20:53+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -10,67 +10,62 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
-"X-Poedit-Basepath: ..\n"
+"X-Poedit-Basepath: ../..\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: translate;_\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: public\n"
+"X-Poedit-SearchPathExcluded-1: vendor\n"
 
 #: module/Application/src/Controller/LoginController.php:46
 msgid "Your username is disabled. Please contact an administrator."
-msgstr ""
+msgstr "Votre nom d'utilisateur est désactivé. Veuillez contacter un administrateur."
 
 #: module/Application/src/Controller/LoginController.php:48
 msgid "Account disabled"
-msgstr ""
+msgstr "Compte désactivé"
 
 #: module/Application/src/Controller/LoginController.php:53
 msgid "Your username is locked. Please contact an administrator."
-msgstr ""
+msgstr "Votre nom d'utilisateur est verrouillé. Veuillez contacter un administrateur."
 
 #: module/Application/src/Controller/LoginController.php:55
 msgid "Account locked"
-msgstr ""
+msgstr "Compte bloqué"
 
 #: module/Application/src/Controller/LoginController.php:76
 #: module/Application/src/Controller/LoginController.php:85
 msgid "Your authentication credentials are not valid"
-msgstr ""
-
-#: module/Application/src/Form/LoginForm.php:23
-#: module/Application/src/Form/LoginForm.php:30
-#: module/Application/view/application/login/index.php:18
-#: module/User/src/Form/LoginForm.php:15 module/User/src/Form/LoginForm.php:22
-msgid "Password"
-msgstr "Mot de passe"
-
-#: module/Application/src/Form/LoginForm.php:37
-#: module/User/src/Form/LoginForm.php:29
-msgid "Remember me?"
-msgstr ""
-
-#: module/Application/src/Form/LoginForm.php:44
-#: module/Application/view/application/login/index.php:34
-#: module/User/src/Form/LoginForm.php:36
-msgid "Sign In"
-msgstr "Se conncter"
+msgstr "Vos informations d'authentification ne sont pas valides"
 
 #: module/Application/view/application/login/index.php:14
 msgid "Username or Email"
-msgstr ""
+msgstr "Nom d'utilisateur ou email"
+
+#: module/Application/view/application/login/index.php:18
+msgid "Password"
+msgstr "Mot de passe"
 
 #: module/Application/view/application/login/index.php:26
 msgid "Verify you are human"
 msgstr ""
 
+#: module/Application/view/application/login/index.php:34
+msgid "Sign In"
+msgstr "Se conncter"
+
 #: module/Application/view/application/login/index.php:78
 msgid "Sign up"
-msgstr ""
+msgstr "S'inscrire"
 
 #: module/Application/view/application/login/index.php:81
 msgid "Forgot your password?"
-msgstr ""
+msgstr "Mot de passe oublié?"
 
-#: module/User/src/Form/UserForm.php:65
-msgid "Add"
-msgstr "Ajouter"
+#: module/User/view/user/user/edit.phtml:2
+msgid "Edit user"
+msgstr "Modifier l'utilisateur"
+
+#~ msgid "Add"
+#~ msgstr "Ajouter"
