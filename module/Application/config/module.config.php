@@ -11,7 +11,9 @@ use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 use Zend\Authentication\AuthenticationService;
+use Application\Service\Factory\AuthenticationServiceFactory;
 use Application\Controller\Plugin\Factory\TranslatorPluginFactory;
+
 
 return [
     'router' => [
@@ -60,25 +62,23 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
-            Controller\LoginController::class => InvokableFactory::class
+            Controller\LoginController::class => Controller\Factory\LoginControllerFactory::class,
+            Controller\IndexController::class => InvokableFactory::class
         ],
     ],
      'service_manager' => [
-        'alias' => [
-            AuthenticationService::class => 'my_auth_service',
-        ],
-        'invokables' => [
-            'my_auth_service' => AuthenticationService::class
-        ],
         'factories' => [
-            'mail.transport' => MailTransportFactory::class,
+            Service\MailSender::class => InvokableFactory::class,
+            AuthenticationService::class => AuthenticationServiceFactory::class,
         ],
     ],
     'controller_plugins' => [
         'factories' => [
             'translator' => TranslatorPluginFactory::class,
         ],
+    ],
+    'session_containers' => [
+        'ContainerNamespace'
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
@@ -89,7 +89,6 @@ return [
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'application/login/login' => __DIR__ . '/../view/application/login/login.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ],

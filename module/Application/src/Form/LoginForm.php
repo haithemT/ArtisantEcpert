@@ -15,12 +15,16 @@ class LoginForm extends Form
     public function __construct($name = null)
     {
         parent::__construct('login');
+        $this->setAttribute('class', 'form-horizontal');
         $this->add([
             'name' => 'usernameOrEmail',
             'type' => 'text',
             'options' => [
-                'label' => 'Password',
+                'label' => 'Username Or Email',
             ],
+            'attributes' => [
+                'class'=> 'form-control'
+            ]
         ]);
         $this->add([
             'name' => 'password',
@@ -28,6 +32,9 @@ class LoginForm extends Form
             'options' => [
                 'label' => 'Password',
             ],
+            'attributes' => [
+                'class'=> 'form-control'
+            ]
         ]);
         $this->add([
             'name' => 'rememberme',
@@ -72,9 +79,22 @@ class LoginForm extends Form
     
     /**
      *
-     * Fields for User Log In
+     * Fields for User Sign up
      *
      */
+     private function addSignUpFields()
+    {
+        $this->add([
+            'name' => 'passwordConfirm',
+            'type' => 'password',
+            'options' => [
+                'label' => 'Confirm Password',
+            ],
+            'attributes' => [
+                'class'=> 'form-control'
+            ]
+        ]);
+    }
     /**
      *
      * Input filters for User Log In
@@ -107,14 +127,14 @@ class LoginForm extends Form
                 ['name' => StripTags::class],
                 ['name' => StringTrim::class],
             ],
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'InArray',
-                    'options' => array(
-                        'haystack' => array('0', '1'),
-                     ),
-                ),
-            )
+                    'options' => [
+                        'haystack' => ['0', '1'],
+                    ],
+                ],
+            ]
         ]);
     }
 }

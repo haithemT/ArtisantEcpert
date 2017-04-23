@@ -238,5 +238,11 @@
                     ->appendFile($this->basePath() . '/js/app.js')
                     ->appendFile($this->basePath() . '/js/core/js.cookie.min.js')
         ?>
+        <script>
+            jQuery(function() {
+                // Init page helpers (Appear plugin)
+                App.initHelpers('appear');
+            });
+        </script>
     </body>
 </html>
