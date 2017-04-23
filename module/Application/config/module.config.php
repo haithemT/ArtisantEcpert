@@ -58,6 +58,16 @@ return [
                     ],
                 ],
             ],
+            'confirmSignUp' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/confirm',
+                    'defaults' => [
+                        'controller' => Controller\LoginController::class,
+                        'action'     => 'confirmSignUp',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -70,6 +80,7 @@ return [
         'factories' => [
             Service\MailSender::class => InvokableFactory::class,
             AuthenticationService::class => AuthenticationServiceFactory::class,
+            User\Service\UserService::class => AuthenticationServiceFactory::class,
         ],
     ],
     'controller_plugins' => [

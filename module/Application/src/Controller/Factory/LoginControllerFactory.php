@@ -1,5 +1,6 @@
 <?php
 namespace Application\Controller\Factory;
+
 use Interop\Container\ContainerInterface;
 use Application\Controller\LoginController;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -12,7 +13,7 @@ class LoginControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {   
         $authService = $container->get(\Zend\Authentication\AuthenticationService::class);
-        
-        return new LoginController($authService);
+        $userTable = $container->get(\User\Model\UserTable::class);
+        return new LoginController($authService,$userTable);
     }
 }

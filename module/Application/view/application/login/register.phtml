@@ -1,4 +1,5 @@
 <?php
+
 $form = $this->form;
 /**
  *
@@ -6,29 +7,37 @@ $form = $this->form;
  *
  */
 $form->setAttributes(array(
-    'class' => 'form'
+    'class' => 'form-horizontal'
 ));
-$form->get('usernameOrEmail')->setAttributes(array( 
-    'placeholder' => $this->translate('enter username or email')
+$form->get('username')->setAttributes(array( 
+    'placeholder' => $this->translate('enter your username')
+));
+$form->get('firstname')->setAttributes(array( 
+    'placeholder' => $this->translate('enter your first name')
+));
+$form->get('lastname')->setAttributes(array( 
+    'placeholder' => $this->translate('enter your last name')
+));
+$form->get('email')->setAttributes(array( 
+    'placeholder' => $this->translate('enter your email')
 ));
 $form->get('password')->setAttributes(array(
     'placeholder' => $this->translate('enter your password')
 ));
-$form->get('rememberme')->setAttributes(array(
-    //'class' => 'form-control input-lg', 
+$form->get('passwordConfirm')->setAttributes(array(
+    'placeholder' => $this->translate('confirm your password')
 ));
-$form->get('captcha')->setAttributes(array(
+
+
+$form->get('captcha')->setAttributes([
     'required' => 'true',
     'class' => 'form-control',
     'placeholder' => $this->translate('Verify you are human')
-));
-$form->get('submit')->setAttributes(array(
-    'class' => 'btn btn-block btn-primary',
-    'label' => '<i class="fa fa-arrow-right pull-right"></i> Log in',
-            'label_options' => [
-                'disable_html_escape' => true,
-            ]
-));
+]);
+$form->get('submit')->setAttributes([
+    'class' => 'btn btn-block btn-success',
+    'value' => $this->translate('Sign Up'),
+]);
 $form->prepare();
 ?>
 <!-- Hero Content -->
@@ -59,12 +68,21 @@ $form->prepare();
                     <div class="form-group">
                         <div class="col-xs-12">
                             <div class="form-material form-material-primary">
-                                <?php echo $this->formElement($form->get('usernameOrEmail')); ?>
-                                <?php echo $this->formLabel($form->get('usernameOrEmail')); ?>
-                                <?php echo $this->formElementErrors($form->get('usernameOrEmail')); ?>
+                                <?php echo $this->formElement($form->get('username')); ?>
+                                <?php echo $this->formLabel($form->get('username')); ?>
+                                <?php echo $this->formElementErrors($form->get('username')); ?>
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="form-material form-material-primary">
+                                <?php echo $this->formElement($form->get('email')); ?>
+                                <?php echo $this->formLabel($form->get('email')); ?>
+                                <?php echo $this->formElementErrors($form->get('email')); ?>
+                            </div>
+                        </div>
+                    </div>                
                     <div class="form-group">
                         <div class="col-xs-12">
                             <div class="form-material form-material-primary">
@@ -76,17 +94,48 @@ $form->prepare();
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
+                            <div class="form-material form-material-primary">
+                                <?php echo $this->formElement($form->get('passwordConfirm')); ?>
+                                <?php echo $this->formLabel($form->get('passwordConfirm')); ?>
+                                <?php echo $this->formElementErrors($form->get('passwordConfirm')); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="form-material form-material-primary">
+                                <?php echo $this->formElement($form->get('firstname')); ?>
+                                <?php echo $this->formLabel($form->get('firstname')); ?>
+                                <?php echo $this->formElementErrors($form->get('firstname')); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <div class="form-material form-material-primary">
+                                <?php echo $this->formElement($form->get('lastname')); ?>
+                                <?php echo $this->formLabel($form->get('lastname')); ?>
+                                <?php echo $this->formElementErrors($form->get('lastname')); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-material form-material-primary">
+                            <div class="col-md-2">
+                                <?php echo $this->formLabel($form->get('registration_type')); ?>
+                            </div>
+                            <div class="col-md-10">
+                                <?php echo $this->formElement($form->get('registration_type')); ?>
+                            </div>
+                        </div>
+                        <?php echo $this->formElementErrors($form->get('registration_type')); ?>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
                             <?php 
                                 echo $this->formElement($form->get('captcha'));
                                 echo $this->formElementErrors($form->get('captcha'));
                             ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-xs-12 text-center">
-                            <label class="css-input switch switch-sm switch-primary">
-                                <?php echo $this->formElement($form->get('rememberme')); ?><span></span> <?php echo $this->formLabel($form->get('rememberme')); ?>
-                            </label>
                         </div>
                     </div>
                     <div class="form-group">
@@ -99,23 +148,20 @@ $form->prepare();
                 echo $this->form()->closeTag();
               ?>
             </div>
-            	            <a href="<?php echo $this->url('login', ['action' => 'reset-password']);?>">
-	              <?php echo $this->translate('Forgot your password?'); ?>
-	            </a>
         </div>
         <!-- END Section Content -->
     </section>
 </div>
 <!-- END Log In Form -->
 
-<!-- Sign Up Today -->
+<!-- Log in -->
 <div class="bg-gray-lighter">
     <section class="content content-full content-boxed">
         <!-- Section Content -->
         <div class="push-20-t push-20 text-center">
-            <h3 class="h4 push-20 visibility-hidden" data-toggle="appear"><?php echo $this->translate('Don’t have an account?');?></h3>
-            <a class="btn btn-rounded btn-noborder btn-lg btn-success visibility-hidden" data-toggle="appear" data-class="animated bounceIn" href="<?php echo $this->url('register', ['action' => 'register']);?>">
-                <?php echo $this->translate('Sign Up Today');?>
+            <h3 class="h4 push-20 animated fadeIn" data-toggle="appear">><?php echo $this->translate('Do you already have an account?');?></h3>
+            <a class="btn btn-rounded btn-noborder btn-lg btn-success animated bounceIn" data-toggle="appear" data-class="animated bounceIn" href="<?php echo $this->url('login', ['action' => 'login']);?>">
+                <?php echo $this->translate('Log In');?>
             </a>
         </div>
         <!-- END Section Content -->

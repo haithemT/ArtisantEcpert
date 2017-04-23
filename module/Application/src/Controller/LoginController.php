@@ -8,6 +8,7 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
 use User\Model\User;
 use Application\Form\LoginForm;
+use User\Model\UserTable;
 
 
 /**
@@ -15,11 +16,13 @@ use Application\Form\LoginForm;
  */
 class LoginController extends AbstractActionController
 {
-    private  $authService; 
+    private  $authService;
+    private  $userTable;
     
-    public function __construct(AuthenticationService $authService)
+    public function __construct(AuthenticationService $authService,UserTable $userTable)
     {
         $this->authService = $authService;
+        $this->userTable = $userTable;
     }
     public function loginAction()
     {
@@ -34,11 +37,11 @@ class LoginController extends AbstractActionController
         }
         
         $user = new User;
-        $form = new LoginForm($user);
+        $form = new LoginForm($user,'login');
         $messages = null;
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setValidationGroup('usernameOrEmail', 'password', 'rememberme', 'csrf', 'captcha');
+            //$form->setValidationGroup('usernameOrEmail', 'password', 'rememberme', 'csrf', 'captcha');
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -129,6 +132,59 @@ class LoginController extends AbstractActionController
     
     public function registerAction()
     {
-        return new ViewModel();
+        if ($this->authService->getIdentity()!=null) {
+            throw new \Exception('Already logged in');
+        }
+        $user = new User;
+        $form = new LoginForm($user,'signup');
+        $messages = null;
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $currentDate = date('Y-m-d H:i:s');
+            //$form->setValidationGroup('username','email','firstname','lastname', 'password','passwordConfirm', 'registration_type', 'csrf', 'captcha');
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $data = $form->getData();
+                //CHECK EMAIL
+                if($this->userTable->checkUserExists($data['email'])) {
+                    return new ViewModel([
+                        'error' => $this->translator()->translate('The email is already used'),
+                        'form'	=> $form,
+                        'messages' => $messages
+                    ]);
+                }
+                $user->exchangeArray($form->getData());
+                $user->password= $this->userTable->encryptPassword($data['password']);
+                $user->last_login=$currentDate;
+                $user->subscription_date=$currentDate;
+                $user->ip=$request->getServer('REMOTE_ADDR');
+                if($this->userTable->saveUser($user)){
+                    $this->redirect()->toRoute('confirmSignUp');
+                }  else {
+                    return new ViewModel([
+                        'error' => $this->translator()->translate('Cannot save user!'),
+                        'form'	=> $form,
+                        'messages' => $messages
+                    ]);
+                }
+            }else{
+                return new ViewModel([
+                    'error' => $this->translator()->translate('Your authentication credentials are not valid'),
+                    'form'	=> $form,
+                    'messages' => $messages
+                ]);
+            }
+        }
+        return new ViewModel([
+            'error' => '',
+            'form'	=> $form,
+            'messages' => $messages
+        ]);
+        
+    }
+    
+    public function confirmSignUpAction()
+    {
+            
     }
 }
