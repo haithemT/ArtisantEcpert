@@ -5,65 +5,78 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace User\Controller;
+namespace Blog\Controller;
 
-use User\Model\UserTable;
-use User\Form\UserForm;
-use User\Model\User;
-use User\Service\UserService as UserCredentialsService;
+use Blog\Model\PostTable;
+use Blog\Form\PostForm;
+use Blog\Model\Post;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class UserController extends AbstractActionController
+class BlogController extends AbstractActionController
 {
     private $table;
 
-    public function __construct(UserTable $table)
+    public function __construct(PostTable $table)
     {
         $this->table = $table;
     }
 
  	public function indexAction()
     {
+             print_r($this->identity());die;
         return new ViewModel([
-            'users' => $this->table->fetchAll(),
+            'posts' => $this->table->fetchAll(),
         ]);
 
     }
 
     public function addAction()
     {
-        $form = new UserForm();
-        $form->get('submit')->setValue('Add');
-
+        $form = new PostForm();
         $request = $this->getRequest();
 
         if (! $request->isPost()) {
             return ['form' => $form];
         }
 
-        $user = new User();
-        $form->setInputFilter($user->getInputFilter());
+        $post = new Post();
+        $postStatus = $form->get('status');
+        $postStatusList = [
+            [
+                'value' => 'publish',
+                'label' => $this->translate('Publish'),               
+            ],
+            [
+                'value' => 'draft',
+                'label' => $this->translate('Draft'),               
+            ],
+            [
+                'value' => 'pending',
+                'label' => $this->translate('Pending'),               
+            ],
+        ];
+        $postStatus->setValueOptions($postStatusList);
+        
+        $form->setInputFilter($post->getInputFilter());
         $form->setData($request->getPost());
 
         if (! $form->isValid()) {
             return ['form' => $form];
         }   
-        $user->exchangeArray($form->getData());
+        $post->exchangeArray($form->getData());
         /**
          * 
          * SET CONNECTED USER IP
          * @todo get the real connected user ip not the proxied ip
          */
-        $user->ip=$request->getServer('REMOTE_ADDR');
-        $user->setEmailConfirmed(false);
-        $user->subscription_date=new \DateTime();
+        $post->author_id=$this->identity()['id'];
         $user->confirmation_token=md5(uniqid(mt_rand(), true));
         $user->password=UserCredentialsService::encryptPassword($user->password);
         
-        $this->table->saveUser($user);
-        return $this->redirect()->toRoute('user');
+        $this->table->savePost($post);
+        return $this->redirect()->toRoute('post');
     }
 
     public function editAction()

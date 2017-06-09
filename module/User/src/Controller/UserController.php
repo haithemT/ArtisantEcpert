@@ -57,8 +57,6 @@ class UserController extends AbstractActionController
          * @todo get the real connected user ip not the proxied ip
          */
         $user->ip=$request->getServer('REMOTE_ADDR');
-        $user->setEmailConfirmed(false);
-        $user->subscription_date=new \DateTime();
         $user->confirmation_token=md5(uniqid(mt_rand(), true));
         $user->password=UserCredentialsService::encryptPassword($user->password);
         

@@ -5,13 +5,13 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace UserTest\Controller;
+namespace BlogTest\Controller;
 
-use User\Controller\UserController;
+use Blog\Controller\BlogController;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
-class UserControllerTest extends AbstractHttpControllerTestCase
+class BlogControllerTest extends AbstractHttpControllerTestCase
 {
     protected $traceError = true;
     public function setUp()
@@ -32,12 +32,12 @@ class UserControllerTest extends AbstractHttpControllerTestCase
 
     public function testIndexActionCanBeAccessed()
     {
-        $this->dispatch('/user');
+        $this->dispatch('/blog');
         $this->assertResponseStatusCode(200);
-        $this->assertModuleName('User');
+        $this->assertModuleName('Blog');
         $this->assertControllerName(UserController::class); // as specified in router's controller name alias
-        $this->assertControllerClass('UserController');
-        $this->assertMatchedRouteName('user');
+        $this->assertControllerClass('BlogController');
+        $this->assertMatchedRouteName('blog');
     }
 
     public function testIndexActionViewModelTemplateRenderedWithinLayout()

@@ -1,69 +1,69 @@
 <?php
 
-namespace User\Form;
+namespace Blog\Form;
 
 use Zend\Form\Form;
 
-class UserForm extends Form
+class PostForm extends Form
 {
     public function __construct($name = null)
     {
         // We will ignore the name provided to the constructor
-        parent::__construct('user');
+        parent::__construct('post');
+        $this->setAttribute('class', 'form-horizontal push-10-t');
         
         $this->add([
             'name' => 'id',
             'type' => 'hidden',
         ]);
         $this->add([
-            'name' => 'username',
+            'name' => 'title',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
             'options' => [
                 'label' => 'Username',
+                
             ],
         ]);
         $this->add([
-            'name' => 'email',
-            'type' => 'email',
-            'options' => [
-                'label' => 'Email',
-            ],
-        ]);
-        $this->add([
-            'name' => 'password',
-            'type' => 'password',
-            'options' => [
-                'label' => 'Password',
-            ],
-        ]);
-        $this->add([
-            'name' => 'firstname',
+            'name' => 'content',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
             'options' => [
-                'label' => 'First name',
+                'label' => 'Content',
             ],
         ]);
         $this->add([
-            'name' => 'lastname',
+            'name' => 'excerpt',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
             'options' => [
-                'label' => 'Last Name',
+                'label' => 'Excerpt',
+            ],
+        ]);
+        $this->add([
+            'name' => 'status',
+            'type' => 'select',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
+            'options' => [
+                'label' =>'Status',
             ],
         ]);
         $this->add([
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => [
-                'value' => 'Save',
-                'id'    => 'submitbutton',
-            ],
-        ]);
-        $this->add([
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => [
-                'value' => 'Add',
-                'id'    => 'submitbutton',
+                'value'     => 'Add new user',
+                'id'        => 'submitbutton',
+                'class'     => 'btn btn-primary'
             ],
         ]);
         $this->add([
@@ -74,16 +74,6 @@ class UserForm extends Form
                     'timeout' => 600
                 ]
             ]
-        ]);
-         
-        $this->add([
-            'name' => 'captcha',
-            'type' => 'Zend\Form\Element\Captcha',
-            'options' => [
-                'captcha' => new \Zend\Captcha\Figlet([
-                        'wordLen' => 3,
-                ]),
-            ],
         ]);
     }
 }

@@ -51,7 +51,7 @@ class User implements InputFilterAwareInterface
         $this->expires_at 				= (isset($data['expires_at'])) ? $data['expires_at'] : null;      
         $this->confirmation_token                       = (isset($data['confirmation_token'])) ? $data['confirmation_token'] : null;
         $this->password_requested_at                    = (isset($data['password_requested_at'])) ? $data['password_requested_at'] : null;
-        $this->roles     				= (isset($data['roles'])) ? $data['roles'] : null;
+        //$this->roles     				= (isset($data['roles'])) ? $data['roles'] : null;
         $this->credentials_expired                      = (isset($data['credentials_expired'])) ? $data['credentials_expired'] : null; 
         $this->credentials_expire_at                    = (isset($data['credentials_expire_at'])) ? $data['credentials_expire_at'] : null; 
         $this->ip 					= (isset($data['ip'])) ? $data['ip'] : null; 
@@ -76,7 +76,8 @@ class User implements InputFilterAwareInterface
             'expired'               =>$this->expired,    
             'expires_at'            =>$this->expires_at,    
             'password_requested_at' =>$this->password_requested_at,
-            'roles'                 =>$this->roles,
+            'confirmation_token'    =>$this->confirmation_token,
+            //'roles'                 =>$this->roles,
             'credentials_expired'   =>$this->credentials_expired,
             'credentials_expire_at' =>$this->credentials_expire_at,
             'ip'                    =>$this->ip,
@@ -112,6 +113,24 @@ class User implements InputFilterAwareInterface
         ]);
 
         $inputFilter->add([
+            'name' => 'username',
+            'required' => true,
+            'filters' => [
+                ['name' => StripTags::class],
+                ['name' => StringTrim::class],
+            ],
+            'validators' => [
+                [
+                    'name' => StringLength::class,
+                    'options' => [
+                        'encoding' => 'UTF-8',
+                        'min' => 1,
+                        'max' => 100,
+                    ],
+                ],
+            ],
+        ]);
+        $inputFilter->add([
             'name' => 'firstname',
             'required' => true,
             'filters' => [
@@ -143,6 +162,24 @@ class User implements InputFilterAwareInterface
                     'options' => [
                         'encoding' => 'UTF-8',
                         'min' => 1,
+                        'max' => 100,
+                    ],
+                ],
+            ],
+        ]);
+        $inputFilter->add([
+            'name' => 'password',
+            'required' => true,
+            'filters' => [
+                ['name' => StripTags::class],
+                ['name' => StringTrim::class],
+            ],
+            'validators' => [
+                [
+                    'name' => StringLength::class,
+                    'options' => [
+                        'encoding' => 'UTF-8',
+                        'min' => 8,
                         'max' => 100,
                     ],
                 ],

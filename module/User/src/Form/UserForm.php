@@ -10,6 +10,7 @@ class UserForm extends Form
     {
         // We will ignore the name provided to the constructor
         parent::__construct('user');
+        $this->setAttribute('class', 'form-horizontal push-10-t');
         
         $this->add([
             'name' => 'id',
@@ -18,13 +19,20 @@ class UserForm extends Form
         $this->add([
             'name' => 'username',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
             'options' => [
                 'label' => 'Username',
+                
             ],
         ]);
         $this->add([
             'name' => 'email',
             'type' => 'email',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
             'options' => [
                 'label' => 'Email',
             ],
@@ -32,6 +40,9 @@ class UserForm extends Form
         $this->add([
             'name' => 'password',
             'type' => 'password',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
             'options' => [
                 'label' => 'Password',
             ],
@@ -39,6 +50,9 @@ class UserForm extends Form
         $this->add([
             'name' => 'firstname',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
             'options' => [
                 'label' => 'First name',
             ],
@@ -46,24 +60,51 @@ class UserForm extends Form
         $this->add([
             'name' => 'lastname',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
             'options' => [
                 'label' => 'Last Name',
             ],
         ]);
         $this->add([
-            'name' => 'submit',
-            'type' => 'submit',
+            'name' => 'facebook',
+            'type' => 'text',
             'attributes' => [
-                'value' => 'Save',
-                'id'    => 'submitbutton',
+                'class' => 'form-control'
+            ],
+            'options' => [
+                'label' => 'Facebook',
+            ],
+        ]);
+        $this->add([
+            'name' => 'linkedin',
+            'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
+            'options' => [
+                'label' => 'LinkedIn',
+            ],
+        ]);
+        
+        $this->add([
+            'name' => 'avatar',
+            'type' => 'file',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
+            'options' => [
+                'label' => 'Avatar',
             ],
         ]);
         $this->add([
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => [
-                'value' => 'Add',
-                'id'    => 'submitbutton',
+                'value'     => 'Add new user',
+                'id'        => 'submitbutton',
+                'class'     => 'btn btn-primary'
             ],
         ]);
         $this->add([
@@ -78,10 +119,13 @@ class UserForm extends Form
          
         $this->add([
             'name' => 'captcha',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
             'type' => 'Zend\Form\Element\Captcha',
             'options' => [
                 'captcha' => new \Zend\Captcha\Figlet([
-                        'wordLen' => 3,
+                    'wordLen' => 3,
                 ]),
             ],
         ]);

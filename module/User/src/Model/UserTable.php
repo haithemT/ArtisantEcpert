@@ -4,6 +4,7 @@ namespace User\Model;
 use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Db\Sql\Expression;
 
 class UserTable
 {
@@ -60,12 +61,11 @@ class UserTable
         $data = [
             'username'              => $user->username,
             'firstname'             => $user->firstname,
-            'username'              => $user->username,
             'lastname'              => $user->lastname,
             'email'                 => $user->email,
             'enabled'               => ($user->enabled==null) ? 0:$user->enabled,
             'password'              => $user->password,
-            'last_login'            => $user->last_login,
+            'last_login'            => new Expression('NOW()'),
             'locked'                => ($user->locked==null) ? 0:$user->locked,
             'expired'               => ($user->expired==null) ? 0:$user->expired,
             'expires_at'            => $user->expires_at,
@@ -74,13 +74,12 @@ class UserTable
             'credentials_expired'   => ($user->credentials_expired==null) ? 0:$user->credentials_expired,
             'credentials_expire_at' => $user->credentials_expire_at,
             'ip'                    => $user->ip,
-            'subscription_date'     => $user->subscription_date,
+            'subscription_date'     => new Expression('NOW()'),
             'facebook_id'           => $user->facebook_id,
             'linkedin_id'           => $user->linkedin_id,
             'avatar_path'           => $user->avatar_path,
-            'roles'                 => (!isset($user->roles) || $user->roles==null) ? 'user':$user->roles,
+            //'roles'                 => (!isset($user->roles) || $user->roles==null) ? 'user':$user->roles,
         ];
-
         $id = (int) $user->id;
 
         if ($id === 0) {

@@ -1,26 +1,76 @@
 <?php
-$title = 'Users';
+$title = $this->translate('Users list');
 $this->headTitle($title);
 ?>
-<h1><?= $this->escapeHtml($title) ?></h1>
-<p>
-    <a href="<?= $this->url('user', ['action' => 'add']) ?>">Add new user</a>
-</p>
+<!-- Page Header -->
+<div class="content bg-gray-lighter">
+    <div class="row items-push">
+        <div class="col-sm-7">
+            <h1 class="page-heading">
+                <?= $this->escapeHtml($title) ?>
+            </h1>
+        </div>
+        <div class="col-sm-5 text-right hidden-xs">
+            <a href="<?= $this->url('user', ['action' => 'add']) ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo $this->translate('Add new user');?></a>
+        </div>
+        <!--<div class="col-sm-5 text-right hidden-xs">
+            <ol class="breadcrumb push-10-t">
+                <li>Tables</li>
+                <li><a class="link-effect" href="">DataTables</a></li>
+            </ol>
+        </div>-->
+    </div>
+</div>
 
-<table class="table">
-<tr>
-    <th>First name</th>
-    <th>Last name</th>
-    <th>&nbsp;</th>
-</tr>
-<?php foreach ($users as $user) : ?>
-    <tr>
-        <td><?= $this->escapeHtml($user->firstname) ?></td>
-        <td><?= $this->escapeHtml($user->lastname) ?></td>
-        <td>
-            <a href="<?= $this->url('user', ['action' => 'edit', 'id' => $user->id]) ?>">Edit</a>
-            <a href="<?= $this->url('user', ['action' => 'delete', 'id' => $user->id]) ?>">Delete</a>
-        </td>
-    </tr>
-<?php endforeach; ?>
-</table>
+<!-- Page Content -->
+<div class="content">
+    <!-- Dynamic Table Full -->
+    <div class="block">
+        <div class="block-header">
+            <h3 class="block-title"><?= $this->escapeHtml($title) ?></h3>
+        </div>
+        <div class="block-content">
+            <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/base_tables_datatables.js -->
+            <table class="table table-bordered table-striped js-dataTable-full">
+                <thead>
+                    <tr>
+                        <th><?php echo $this->translate('Avatar');?></th>
+                        <th><?php echo $this->translate('ID');?></th>
+                        <th><?php echo $this->translate('Username');?></th>
+                        <th><?php echo $this->translate('First name');?></th>
+                        <th><?php echo $this->translate('Last name');?></th>
+                        <td><?php echo $this->translate('Active');?></td>
+                        <th><?php echo $this->translate('IP');?></th>
+                        <th><?php echo $this->translate('Last login');?></th>
+                        <th class="text-center" style="width: 10%;"><?php echo $this->translate('Actions');?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($users as $user) : ?>
+                        <tr>
+                            <td><img class="img-avatar32" src="/images/avatar/<?= $this->escapeHtml($user->avatar_path) ?>"</td>
+                            <td><?= $this->escapeHtml($user->id) ?></td>
+                            <td><?= $this->escapeHtml($user->username) ?></td>
+                            <td><?= $this->escapeHtml($user->firstname) ?></td>
+                            <td><?= $this->escapeHtml($user->lastname) ?></td>
+                            <td>
+                                <?= $user->enabled ? '<span class="label label-success">'.$this->translate('Active').'</span>':'<span class="label label-danger">'.$this->translate('Unactive').'</span>' ?>
+                                <?= $user->locked ? '<span class="label label-warning">'.$this->translate('Locked').'</span>':'' ?>
+                                <?= $user->expired ? '<span class="label label-default">'.$this->translate('Expired').'</span>':'' ?>
+                            </td>
+                            <td><?= $this->escapeHtml($user->ip) ?></td>
+                            <td><?= $this->escapeHtml($user->last_login) ?></td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="<?= $this->url('user', ['action' => 'edit', 'id' => $user->id]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Edit User');?>"><i class="fa fa-pencil"></i></a>
+                                    <a href="<?= $this->url('user', ['action' => 'delete', 'id' => $user->id]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Remove User');?>"><i class="fa fa-times"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- END Page Header -->
