@@ -25,7 +25,6 @@ class BlogController extends AbstractActionController
 
  	public function indexAction()
     {
-             print_r($this->identity());die;
         return new ViewModel([
             'posts' => $this->table->fetchAll(),
         ]);
@@ -36,29 +35,18 @@ class BlogController extends AbstractActionController
     {
         $form = new PostForm();
         $request = $this->getRequest();
-
+        $postStatusList = [
+            'publish'   => $this->translator()->translate('Publish'),
+            'draft'     => $this->translator()->translate('Draft'),
+            'pending'   => $this->translator()->translate('Pending')
+        ];
+        $form->get('status')->setAttribute('options',$postStatusList);
         if (! $request->isPost()) {
             return ['form' => $form];
         }
 
         $post = new Post();
-        $postStatus = $form->get('status');
-        $postStatusList = [
-            [
-                'value' => 'publish',
-                'label' => $this->translate('Publish'),               
-            ],
-            [
-                'value' => 'draft',
-                'label' => $this->translate('Draft'),               
-            ],
-            [
-                'value' => 'pending',
-                'label' => $this->translate('Pending'),               
-            ],
-        ];
-        $postStatus->setValueOptions($postStatusList);
-        
+
         $form->setInputFilter($post->getInputFilter());
         $form->setData($request->getPost());
 
@@ -71,12 +59,9 @@ class BlogController extends AbstractActionController
          * SET CONNECTED USER IP
          * @todo get the real connected user ip not the proxied ip
          */
-        $post->author_id=$this->identity()['id'];
-        $user->confirmation_token=md5(uniqid(mt_rand(), true));
-        $user->password=UserCredentialsService::encryptPassword($user->password);
-        
+        $post->author_id=$this->identity()['id'];        
         $this->table->savePost($post);
-        return $this->redirect()->toRoute('post');
+        return $this->redirect()->toRoute('blog');
     }
 
     public function editAction()
@@ -84,22 +69,22 @@ class BlogController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (0 === $id) {
-            return $this->redirect()->toRoute('user', ['action' => 'add']);
+            return $this->redirect()->toRoute('blog', ['action' => 'add']);
         }
 
         // Retrieve the user with the specified id. Doing so raises
         // an exception if the user is not found, which should result
         // in redirecting to the landing page.
         try {
-            $user = $this->table->getUser($id);
+            $post = $this->table->getPost($id);
         } catch (\Exception $e) {
-            return $this->redirect()->toRoute('user', ['action' => 'index']);
+            return $this->redirect()->toRoute('blog', ['action' => 'index']);
         }
 
-        $form = new UserForm();
-        $form->bind($user);
+        $form = new PostForm();
+        $form->bind($post);
         $form->get('submit')->setAttribute('value', 'Edit');
-
+        $form->get('status')->setValue($post->status);
         $request = $this->getRequest();
         $viewData = ['id' => $id, 'form' => $form];
 
@@ -107,29 +92,23 @@ class BlogController extends AbstractActionController
             return $viewData;
         }
 
-        $form->setInputFilter($user->getInputFilter());
+        $form->setInputFilter($post->getInputFilter());
         $form->setData($request->getPost());
 
         if (! $form->isValid()) {
             return $viewData;
         }
-        /**
-         * 
-         * SET CONNECTED USER IP
-         * @todo get the real connected user ip not the proxied ip
-         */
-        $user->ip=$request->getServer('REMOTE_ADDR');
-        $this->table->saveUser($user);
+        $this->table->savePost($post);
 
         // Redirect to users list
-        return $this->redirect()->toRoute('user', ['action' => 'index']);
+        return $this->redirect()->toRoute('blog', ['action' => 'index']);
     }
 
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('user');
+            return $this->redirect()->toRoute('post');
         }
 
         $request = $this->getRequest();
@@ -138,16 +117,16 @@ class BlogController extends AbstractActionController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->table->deleteUser($id);
+                $this->table->deletePost($id);
             }
 
-            // Redirect to list of users
-            return $this->redirect()->toRoute('user');
+            // Redirect to list of posts
+            return $this->redirect()->toRoute('blog');
         }
 
         return [
             'id'    => $id,
-            'user' => $this->table->getUser($id),
+            'post' => $this->table->getPost($id),
         ];
     }
 }

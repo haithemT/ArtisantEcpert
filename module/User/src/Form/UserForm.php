@@ -116,18 +116,90 @@ class UserForm extends Form
                 ]
             ]
         ]);
-         
         $this->add([
-            'name' => 'captcha',
-            'attributes' => [
-                'class' => 'form-control'
-            ],
-            'type' => 'Zend\Form\Element\Captcha',
+            'name' => 'role',
+            'type' => 'radio',
             'options' => [
-                'captcha' => new \Zend\Captcha\Figlet([
-                    'wordLen' => 3,
-                ]),
+                'value_options' => [
+                    '1' => [
+                            'label' => '<span></span> Client',
+                            'label_attributes' => ['class' => 'css-input css-radio css-radio-primary push-10-r'],
+                            'disable_html_escape' => true,
+                            'value' => '1'
+                    ],
+                    '2' =>  [
+                            'label' => '<span></span> Artisant',
+                            'label_attributes' => ['class' => 'css-input css-radio css-radio-primary push-10-r'],
+                            'value' => '2'
+                    ],
+                    '3' =>  [
+                            'label' => '<span></span> Admin',
+                            'label_attributes' => ['class' => 'css-input css-radio css-radio-primary'],
+                            'value' => '3'
+                    ],
+                ],
+                'label' => 'Role',
+                'label_options' => [
+                    'disable_html_escape' => true,
+                ]
             ],
+            'attributes' => [
+                'class'=> 'form-control'
+            ]
+        ]);
+        
+        $this->add([
+            'name' => 'locked',
+            'type' => 'radio',
+            'options' => [
+                'value_options' => [
+                    '1' => [
+                            'label' => '<span></span> Yes',
+                            'label_attributes' => ['class' => 'css-input css-radio css-radio-primary push-10-r'],
+                            'disable_html_escape' => true,
+                            'value' => '1'
+                    ],
+                    '0' =>  [
+                            'label' => '<span></span> No',
+                            'label_attributes' => ['class' => 'css-input css-radio css-radio-primary push-10-r'],
+                            'value' => '0'
+                    ]
+                ],
+                'label' => 'Lock account',
+                'label_options' => [
+                    'disable_html_escape' => true,
+                ]
+            ],
+            'attributes' => [
+                'class'=> 'form-control'
+            ]
+        ]);
+        
+         $this->add([
+            'name' => 'enabled',
+            'type' => 'radio',
+            'options' => [
+                'value_options' => [
+                    '1' => [
+                            'label' => '<span></span> Yes',
+                            'label_attributes' => ['class' => 'css-input css-radio css-radio-primary push-10-r'],
+                            'disable_html_escape' => true,
+                            'value' => '1'
+                    ],
+                    '0' =>  [
+                            'label' => '<span></span> No',
+                            'label_attributes' => ['class' => 'css-input css-radio css-radio-primary push-10-r'],
+                            'value' => '0'
+                    ]
+                ],
+                'label' => 'Lock account',
+                'label_options' => [
+                    'disable_html_escape' => true,
+                ]
+            ],
+            'attributes' => [
+                'class'=> 'form-control'
+            ]
         ]);
     }
 }

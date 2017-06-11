@@ -39,6 +39,7 @@ $this->headTitle($title);
                         <th><?php echo $this->translate('Username');?></th>
                         <th><?php echo $this->translate('First name');?></th>
                         <th><?php echo $this->translate('Last name');?></th>
+                        <th><?php echo $this->translate('Role');?></th>
                         <td><?php echo $this->translate('Active');?></td>
                         <th><?php echo $this->translate('IP');?></th>
                         <th><?php echo $this->translate('Last login');?></th>
@@ -53,6 +54,7 @@ $this->headTitle($title);
                             <td><?= $this->escapeHtml($user->username) ?></td>
                             <td><?= $this->escapeHtml($user->firstname) ?></td>
                             <td><?= $this->escapeHtml($user->lastname) ?></td>
+                            <td><?= $this->escapeHtml($user->role_name) ?></td>
                             <td>
                                 <?= $user->enabled ? '<span class="label label-success">'.$this->translate('Active').'</span>':'<span class="label label-danger">'.$this->translate('Unactive').'</span>' ?>
                                 <?= $user->locked ? '<span class="label label-warning">'.$this->translate('Locked').'</span>':'' ?>

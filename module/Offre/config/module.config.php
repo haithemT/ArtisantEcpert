@@ -5,7 +5,7 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace User;
+namespace Offre;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
@@ -14,30 +14,30 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 return [
     'router' => [
         'routes' => [
-            'user' => [
+            'offre' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route' => '/user[/:action[/:id]]',
+                    'route' => '/offre[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\UserController::class,
+                        'controller' => Controller\BlogController::class,
                         'action'     => 'index',
                     ],
                 ],
             ],
-            'feedback' => [
+            'prestation' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route' => '/feedback[/:action[/:id]]',
+                    'route' => '/prestation[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\FeedbackController::class,
+                        'controller' => Controller\BlogController::class,
                         'action'     => 'index',
                     ],
                 ],

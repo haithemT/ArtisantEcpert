@@ -95,18 +95,20 @@ $form->get('submit')->setValue($this->translate('Add user'));
                             </div>
                         </div>
                     </div>
-                    <div class="form-group <?php echo !empty($form->get('captcha')->getMessages())?'has-error':'';?>">
+                    <div class="form-group  <?php echo !empty($form->get('role')->getMessages())?'has-error':'';?>">
                         <div class="col-sm-9">
                             <div class="form-material">
-                                <label><?php echo $this->translate('Security check');?></label>
-                                <?php echo $this->formElement($form->get('captcha')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('captcha'));?>
+                                <label><?php echo $this->translate('Role');?></label>
+                                <div>
+                                    <?php echo $this->formElement($form->get('role')); ?>
                                 </div>
-                                <?php echo $this->formElement($form->get('csrf')); ?>
+                                <div class="help-block text-right animated fadeInDown form-error">
+                                    <?php echo $this->formElementErrors($form->get('role'));?>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <?php echo $this->formElement($form->get('csrf')); ?>
                 </div>
             </div>
         </div>

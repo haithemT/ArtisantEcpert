@@ -3,9 +3,11 @@ $title = $this->translate('Edit user');
 $this->headTitle($title);
 $form->setAttribute('action', $this->url('user', [
     'action' => 'edit',
-    'id'     => $id,
+    'id'     => $user->id,
 ]));
 $form->get('submit')->setValue($this->translate('Save changes'));
+$form->get('password')->setValue($this->password);
+
 $form->prepare();
 ?>
 
@@ -62,17 +64,6 @@ $form->prepare();
                             </div>
                         </div>
                     </div>
-                    <div class="form-group  <?php echo !empty($form->get('password')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-9">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Password');?></label>
-                                <?php echo $this->formElement($form->get('password')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('password'));?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="form-group  <?php echo !empty($form->get('firstname')->getMessages())?'has-error':'';?>">
                         <div class="col-sm-9">
                             <div class="form-material">
@@ -95,18 +86,20 @@ $form->prepare();
                             </div>
                         </div>
                     </div>
-                    <div class="form-group <?php echo !empty($form->get('captcha')->getMessages())?'has-error':'';?>">
+                    <div class="form-group  <?php echo !empty($form->get('role')->getMessages())?'has-error':'';?>">
                         <div class="col-sm-9">
                             <div class="form-material">
-                                <label><?php echo $this->translate('Security check');?></label>
-                                <?php echo $this->formElement($form->get('captcha')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('captcha'));?>
+                                <label><?php echo $this->translate('Role');?></label>
+                                <div>
+                                    <?php echo $this->formElement($form->get('role')); ?>
                                 </div>
-                                <?php echo $this->formElement($form->get('csrf')); ?>
+                                <div class="help-block text-right animated fadeInDown form-error">
+                                    <?php echo $this->formElementErrors($form->get('role'));?>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <?php echo $this->formElement($form->get('csrf')); ?>
                 </div>
             </div>
         </div>
@@ -156,12 +149,76 @@ $form->prepare();
                     </div>                    
                 </div>
             </div>
+            <div class="block">
+                <div class="block-header">
+                    <h3 class="block-title"><?php echo $this->translate('Admin tasks');?></h3>
+                    <!--<ul class="block-options">
+                        <li>
+                            <button type="button"><i class="si si-settings"></i></button>
+                        </li>
+                    </ul>-->
+                </div>
+                <div class="block-content block-content-narrow">
+                    <div class="form-group  <?php echo !empty($form->get('enabled')->getMessages())?'has-error':'';?>">
+                        <div class="col-sm-12">
+                            <label class="col-md-5" style="padding-top: 4px;"><?php echo $this->translate('Enable account');?></label>
+                            <div class="col-md-7">
+                                <?php echo $this->formElement($form->get('enabled')); ?>
+                            </div>
+                            <div class="help-block text-right animated fadeInDown form-error">
+                                <?php echo $this->formElementErrors($form->get('enabled'));?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group  <?php echo !empty($form->get('locked')->getMessages())?'has-error':'';?>">
+                        <div class="col-sm-12">
+                            <label class="col-md-5" style="padding-top: 4px;"><?php echo $this->translate('Lock account');?></label>
+                            <div class="col-md-7">
+                                <?php echo $this->formElement($form->get('locked')); ?>
+                            </div>
+                            <div class="help-block text-right animated fadeInDown form-error">
+                                <?php echo $this->formElementErrors($form->get('locked'));?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label class="col-md-5"><?php echo $this->translate('Subscription date');?></label>
+                            <div class="col-md-7">
+                                <div>
+                                    <?=$user->subscription_date;?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label class="col-md-5"><?php echo $this->translate('last password request');?></label>
+                            <div class="col-md-7">
+                                <div>
+                                    <?=$user->password_requested_at;?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <label class="col-md-5"><?php echo $this->translate('Credentials expire at');?></label>
+                            <div class="col-md-7">
+                                <div>
+                                    <?=$user->credentials_expire_at;?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>             
+                </div>
+            </div>
         </div>
     </div>
     <div class="block">
         <div class="block-content block-content-narrow">
             <div class="form-group text-center">
-                <a href="/user" class="btn btn-default"><?php echo $this->translate('Back');?></a>
+                <a href="<?=$this->url()->fromRoute('user'); ?>" class="btn btn-default"><?php echo $this->translate('Back');?></a>
                 <?php echo $this->formSubmit($form->get('submit'));?>
             </div>
         </div>

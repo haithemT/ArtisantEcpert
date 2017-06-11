@@ -5,7 +5,7 @@ use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Db\Sql\Expression;
-
+use Zend\Db\Sql\Select;
 class UserTable
 {
     private $tableGateway;
@@ -19,7 +19,8 @@ class UserTable
     public $password;
     public $last_login;
     public $locked;
-    public $roles;
+    public $role;
+    public $role_name;
     public $expired;
     public $expires_at;
     public $confirmation_token;
@@ -39,22 +40,31 @@ class UserTable
 
     public function fetchAll()
     {
-        return $this->tableGateway->select();
+        $rows=[];
+        $select = new Select();
+        $select->from('user');
+        $select->join('roles', 'user.role = roles.id', array('role_name'=>'name'), 'left');
+        $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+        foreach ($resultSet as $row) {
+            $user =new User();
+            $user->exchangeArray($row);
+            $rows[] = $user;
+        }
+        return $rows;
     }
 
     public function getUser($id)
     {
-        $id = (int) $id;
-        $rowset = $this->tableGateway->select(['id' => $id]);
-        $row = $rowset->current();
-        if (! $row) {
-            throw new RuntimeException(sprintf(
-                'Could not find row with identifier %d',
-                $id
-            ));
-        }
-
-        return $row;
+        $user =new User();
+        $select = new Select();
+        $select->from('user');
+        $select->join('roles', 'user.role = roles.id', array('role_name'=>'name'), 'left');
+        $select->where->equalTo('user.id', $id);
+        $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+        $user->exchangeArray($resultSet->current());
+        return $user;
     }
     public function saveUser(User $user)
     {
@@ -64,7 +74,6 @@ class UserTable
             'lastname'              => $user->lastname,
             'email'                 => $user->email,
             'enabled'               => ($user->enabled==null) ? 0:$user->enabled,
-            'password'              => $user->password,
             'last_login'            => new Expression('NOW()'),
             'locked'                => ($user->locked==null) ? 0:$user->locked,
             'expired'               => ($user->expired==null) ? 0:$user->expired,
@@ -83,6 +92,7 @@ class UserTable
         $id = (int) $user->id;
 
         if ($id === 0) {
+        $data['password'] = $user->password;
             $this->tableGateway->insert($data);
             return 1;
         }

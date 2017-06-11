@@ -35,6 +35,16 @@ class Module implements ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Model\User());
                     return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                 },
+                Model\FeedbackTable::class => function($container) {
+                    $tableGateway = $container->get(Model\FeedbackTableGateway::class);
+                    return new Model\FeedbackTable($tableGateway);
+                },
+                Model\FeedbackTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Feedback());
+                    return new TableGateway('feedback', $dbAdapter, null, $resultSetPrototype);
+                },
             ],
         ];
     }
@@ -46,6 +56,11 @@ class Module implements ConfigProviderInterface
                 Controller\UserController::class => function($container) {
                     return new Controller\UserController(
                         $container->get(Model\UserTable::class)
+                    );
+                },
+                Controller\FeedbackController::class => function($container) {
+                    return new Controller\FeedbackController(
+                        $container->get(Model\FeedbackTable::class)
                     );
                 },
             ],

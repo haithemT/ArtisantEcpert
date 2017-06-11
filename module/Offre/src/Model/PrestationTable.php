@@ -10,13 +10,10 @@ class PostTable
     private $tableGateway;
 
     public $id;
-    public $author_id;
-    public $status;
-    public $title;
-    public $content;
-    public $excerpt;
-    public $post_date;
-    public $updated;
+    public $intitule;
+    public $intitule_devis;
+    public $description;
+    
     
     public function __construct(TableGatewayInterface $tableGateway)
     {

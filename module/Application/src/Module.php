@@ -18,6 +18,9 @@ class Module
 {
     const VERSION = '3.0.3-dev';
     
+    protected $whitelist = [
+        'Application\Controller\LoginController'
+    ];
     public function onBootstrap(MvcEvent $e)
     {
         $eventManager        = $e->getApplication()->getEventManager();
@@ -27,6 +30,7 @@ class Module
         // The following line instantiates the SessionManager and automatically
         // makes the SessionManager the 'default' one.
         $sessionManager = $serviceManager->get(SessionManager::class);
+        $eventManager->attach('dispatch', [$this, 'checkLogin']);
     }
     public function getConfig()
     {
@@ -36,5 +40,19 @@ class Module
     public function getServiceConfig()
     {
         return [];
+    }
+    public function checkLogin($e){
+        $match = $e->getRouteMatch();
+        $sm = $e->getApplication()->getServiceManager();
+        $auth = $sm->get(AuthenticationService::class);
+        $target = $e->getTarget();
+        $controller = $match->getParam('controller');
+        // Route is whitelisted
+        if( !in_array($controller, $this->whitelist)){
+            if( !$auth->hasIdentity() ){
+                return $target->redirect()->toRoute('login');
+            }
+        }
+       
     }
 }

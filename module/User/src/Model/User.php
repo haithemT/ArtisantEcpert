@@ -51,7 +51,8 @@ class User implements InputFilterAwareInterface
         $this->expires_at 				= (isset($data['expires_at'])) ? $data['expires_at'] : null;      
         $this->confirmation_token                       = (isset($data['confirmation_token'])) ? $data['confirmation_token'] : null;
         $this->password_requested_at                    = (isset($data['password_requested_at'])) ? $data['password_requested_at'] : null;
-        //$this->roles     				= (isset($data['roles'])) ? $data['roles'] : null;
+        $this->role                                     = (isset($data['role'])) ? $data['role'] : null;
+        $this->role_name                                = (isset($data['role_name'])) ? $data['role_name'] : null;
         $this->credentials_expired                      = (isset($data['credentials_expired'])) ? $data['credentials_expired'] : null; 
         $this->credentials_expire_at                    = (isset($data['credentials_expire_at'])) ? $data['credentials_expire_at'] : null; 
         $this->ip 					= (isset($data['ip'])) ? $data['ip'] : null; 
@@ -77,7 +78,8 @@ class User implements InputFilterAwareInterface
             'expires_at'            =>$this->expires_at,    
             'password_requested_at' =>$this->password_requested_at,
             'confirmation_token'    =>$this->confirmation_token,
-            //'roles'                 =>$this->roles,
+            'role'                  =>$this->role,
+            'role_name'             =>$this->role_name,
             'credentials_expired'   =>$this->credentials_expired,
             'credentials_expire_at' =>$this->credentials_expire_at,
             'ip'                    =>$this->ip,
@@ -162,24 +164,6 @@ class User implements InputFilterAwareInterface
                     'options' => [
                         'encoding' => 'UTF-8',
                         'min' => 1,
-                        'max' => 100,
-                    ],
-                ],
-            ],
-        ]);
-        $inputFilter->add([
-            'name' => 'password',
-            'required' => true,
-            'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
-            ],
-            'validators' => [
-                [
-                    'name' => StringLength::class,
-                    'options' => [
-                        'encoding' => 'UTF-8',
-                        'min' => 8,
                         'max' => 100,
                     ],
                 ],

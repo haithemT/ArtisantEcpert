@@ -5,21 +5,20 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace User\Controller;
+namespace Offre\Controller;
 
-use User\Model\UserTable;
-use User\Form\UserForm;
-use User\Model\User;
-use User\Service\UserService as UserCredentialsService;
+use Offre\Model\PrestationTable;
+use Offre\Form\PrestationForm;
+use Offre\Model\Prestation;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class UserController extends AbstractActionController
+class PrestationController extends AbstractActionController
 {
     private $table;
 
-    public function __construct(UserTable $table)
+    public function __construct(PostTable $table)
     {
         $this->table = $table;
     }
@@ -27,41 +26,42 @@ class UserController extends AbstractActionController
  	public function indexAction()
     {
         return new ViewModel([
-            'users' => $this->table->fetchAll(),
+            'posts' => $this->table->fetchAll(),
         ]);
 
     }
 
     public function addAction()
     {
-        $form = new UserForm();
-        $form->get('submit')->setValue('Add');
-
+        $form = new PostForm();
         $request = $this->getRequest();
-
+        $postStatusList = [
+            'publish'   => $this->translator()->translate('Publish'),
+            'draft'     => $this->translator()->translate('Draft'),
+            'pending'   => $this->translator()->translate('Pending')
+        ];
+        $form->get('status')->setAttribute('options',$postStatusList);
         if (! $request->isPost()) {
             return ['form' => $form];
         }
 
-        $user = new User();
-        $form->setInputFilter($user->getInputFilter());
+        $post = new Post();
+
+        $form->setInputFilter($post->getInputFilter());
         $form->setData($request->getPost());
 
         if (! $form->isValid()) {
             return ['form' => $form];
         }   
-        $user->exchangeArray($form->getData());
+        $post->exchangeArray($form->getData());
         /**
          * 
          * SET CONNECTED USER IP
          * @todo get the real connected user ip not the proxied ip
          */
-        $user->ip=$request->getServer('REMOTE_ADDR');
-        $user->confirmation_token=md5(uniqid(mt_rand(), true));
-        $user->password=UserCredentialsService::encryptPassword($user->password);
-        
-        $this->table->saveUser($user);
-        return $this->redirect()->toRoute('user');
+        $post->author_id=$this->identity()['id'];        
+        $this->table->savePost($post);
+        return $this->redirect()->toRoute('blog');
     }
 
     public function editAction()
@@ -69,52 +69,46 @@ class UserController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (0 === $id) {
-            return $this->redirect()->toRoute('user', ['action' => 'add']);
+            return $this->redirect()->toRoute('blog', ['action' => 'add']);
         }
 
         // Retrieve the user with the specified id. Doing so raises
         // an exception if the user is not found, which should result
         // in redirecting to the landing page.
         try {
-            $user = $this->table->getUser($id);
+            $post = $this->table->getPost($id);
         } catch (\Exception $e) {
-            return $this->redirect()->toRoute('user', ['action' => 'index']);
+            return $this->redirect()->toRoute('blog', ['action' => 'index']);
         }
 
-        $form = new UserForm();
-        $form->bind($user);
+        $form = new PostForm();
+        $form->bind($post);
         $form->get('submit')->setAttribute('value', 'Edit');
-
+        $form->get('status')->setValue($post->status);
         $request = $this->getRequest();
-        $viewData = ['user' => $user, 'form' => $form];
+        $viewData = ['id' => $id, 'form' => $form];
 
         if (! $request->isPost()) {
             return $viewData;
         }
 
-        $form->setInputFilter($user->getInputFilter());
+        $form->setInputFilter($post->getInputFilter());
         $form->setData($request->getPost());
 
         if (! $form->isValid()) {
             return $viewData;
         }
-        /**
-         * 
-         * SET CONNECTED USER IP
-         * @todo get the real connected user ip not the proxied ip
-         */
-        $user->ip=$request->getServer('REMOTE_ADDR');
-        $this->table->saveUser($user);
+        $this->table->savePost($post);
 
         // Redirect to users list
-        return $this->redirect()->toRoute('user', ['action' => 'index']);
+        return $this->redirect()->toRoute('blog', ['action' => 'index']);
     }
 
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('user');
+            return $this->redirect()->toRoute('post');
         }
 
         $request = $this->getRequest();
@@ -123,16 +117,16 @@ class UserController extends AbstractActionController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->table->deleteUser($id);
+                $this->table->deletePost($id);
             }
 
-            // Redirect to list of users
-            return $this->redirect()->toRoute('user');
+            // Redirect to list of posts
+            return $this->redirect()->toRoute('blog');
         }
 
         return [
             'id'    => $id,
-            'user' => $this->table->getUser($id),
+            'post' => $this->table->getPost($id),
         ];
     }
 }

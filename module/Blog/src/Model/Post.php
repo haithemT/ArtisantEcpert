@@ -14,6 +14,7 @@ class Post implements InputFilterAwareInterface
 {
     public $id;
     public $author_id;
+    public $author;
     public $status;
     public $title;
     public $content;
@@ -33,7 +34,8 @@ class Post implements InputFilterAwareInterface
         $this->content 					= (isset($data['content'])) ? $data['content'] : null;
         $this->excerpt                                  = (isset($data['excerpt'])) ? $data['excerpt'] : null;
         $this->post_date                                = (isset($data['post_date'])) ? $data['post_date'] : null;      
-        $this->updated                                  = (isset($data['updated'])) ? $data['updated'] : null;      
+        $this->updated                                  = (isset($data['updated'])) ? $data['updated'] : null;
+        $this->author                                   = (isset($data['firstname']) && isset($data['lastname'])) ? $data['firstname'].' '.$data['lastname'] : null;
     }   
     
     public function getArrayCopy()
@@ -47,6 +49,7 @@ class Post implements InputFilterAwareInterface
             'excerpt'               =>$this->excerpt, 
             'post_date'             =>$this->post_date,
             'updated'               =>$this->updated,
+            'author'                =>$this->author
         ];
     }
     
@@ -75,24 +78,6 @@ class Post implements InputFilterAwareInterface
         ]);
 
         $inputFilter->add([
-            'name' => 'author_id',
-            'required' => true,
-            'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
-            ],
-            'validators' => [
-                [
-                    'name' => StringLength::class,
-                    'options' => [
-                        'encoding' => 'UTF-8',
-                        'min' => 1,
-                        'max' => 100,
-                    ],
-                ],
-            ],
-        ]);
-        $inputFilter->add([
             'name' => 'title',
             'required' => true,
             'filters' => [
@@ -113,6 +98,15 @@ class Post implements InputFilterAwareInterface
 
         $inputFilter->add([
             'name' => 'content',
+            'required' => true,
+            'filters' => [
+                ['name' => StripTags::class],
+                ['name' => StringTrim::class],
+            ],
+        ]);
+        
+        $inputFilter->add([
+            'name' => 'excerpt',
             'required' => true,
             'filters' => [
                 ['name' => StripTags::class],

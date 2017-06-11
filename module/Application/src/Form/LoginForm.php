@@ -165,13 +165,13 @@ class LoginForm extends Form
             'options' => [
                 'value_options' => [
                     '1' => [
-                            'label' => '<span></span> Artisant',
+                            'label' => '<span></span> Client',
                             'label_attributes' => ['class' => 'css-input css-radio css-radio-success push-10-r'],
                             'disable_html_escape' => true,
                             'value' => '1'
                     ],
                     '2' =>  [
-                            'label' => '<span></span> Client',
+                            'label' => '<span></span> Artisant',
                             'label_attributes' => ['class' => 'css-input css-radio css-radio-success'],
                             'value' => '2'
                     ],
