@@ -80,7 +80,7 @@ class LoginController extends AbstractActionController
                         ]
                     );
                     // set remember me
-                    if ($result->getCode()==Result::SUCCESS && $rememberMe) {
+                    if ($result->getCode()==Result::SUCCESS ) {
                         // Session cookie will expire in (14 days).
                         $this->sessionManager->rememberMe(60*60*24*14);
                     }elseif ($result->getCode() == Result::SUCCESS) {

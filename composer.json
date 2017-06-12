@@ -35,14 +35,16 @@
         "psr-4": {
             "Application\\": "module/Application/src/",
             "User\\": "module/User/src/",
-            "Blog\\": "module/Blog/src/"
+            "Blog\\": "module/Blog/src/",
+            "Offre\\": "module/Offre/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/",
             "UserTest\\": "module/User/test/",
-            "BlogTest\\": "module/Blog/test/"
+            "BlogTest\\": "module/Blog/test/",
+            "OffreTest\\": "module/Offre/test/"
         }
     },
     "extra": [],

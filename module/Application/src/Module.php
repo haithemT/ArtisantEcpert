@@ -27,16 +27,11 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $serviceManager = $e->getApplication()->getServiceManager();
         $moduleRouteListener->attach($eventManager);
-        $matches = $e->getRouteMatch();
-        $controller = $matches->getParam('controller');
-        $module_array = explode('\\', $controller);
-        $module = $module_array[0];
         // The following line instantiates the SessionManager and automatically
         // makes the SessionManager the 'default' one.
         $sessionManager = $serviceManager->get(SessionManager::class);
+        $eventManager->attach('dispatch', [$this, 'setLayout']);
         $eventManager->attach('dispatch', [$this, 'checkLogin']);
-        $this->loadScripts($e, $module);
-        $this->loadStyles($e, $module);
     }
     public function getConfig()
     {
@@ -46,6 +41,40 @@ class Module
     public function getServiceConfig()
     {
         return [];
+    }
+    
+    public function setLayout($e) {
+        $matches = $e->getRouteMatch();
+
+        $controller = $matches->getParam('controller');
+
+        $module_array = explode('\\', $controller);
+        $module = $module_array[0];
+
+        // Set the layout template
+       /* $viewModel = $e->getViewModel();
+        // Top menu
+        $topMenuView = new ViewModel();
+        $topMenuView->setTemplate('content/top_menu');
+        // Header
+        $headerView = new ViewModel();
+        $headerView->setTemplate('content/header');
+        // Primary sidebar
+        $sidebarPrimaryView = new ViewModel();
+        $sidebarPrimaryView->setTemplate('content/sidebar_primary');
+
+        $viewModel->addChild($topMenuView, 'top_menu');
+        $viewModel->addChild($headerView, 'header');
+        $viewModel->addChild($sidebarPrimaryView, 'sidebar_primary');*/
+
+        /*if ('Login\Controller\Auth' === $controller) {
+            $viewModel->setTemplate('login/layout');
+            return;
+        }*/
+
+       // $viewModel->setTemplate('content/layout');
+        $this->loadScripts($e, $module);
+        $this->loadStyles($e, $module);
     }
     public function checkLogin($e){
         $match = $e->getRouteMatch();
