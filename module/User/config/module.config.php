@@ -49,4 +49,14 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+    'filesLoading' => [
+        'Client' => [
+            'scripts' => [
+                '/js/user/rating.js?v='.rand(1,1000000),
+            ],
+            'styles' => [
+                '/css/pages/user.css?v='.rand(1,1000000),
+            ],
+        ],
+    ],
 ];

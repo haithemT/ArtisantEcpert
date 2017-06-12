@@ -24,8 +24,8 @@ class PostTable
     {
         $rows=[];
         $select = new Select();
-        $select->from('post');
-        $select->join('user', 'post.author_id = user.id', array('username', 'lastname', 'firstname'), 'left');
+        $select->from('prestation');
+        //$select->join('user', 'post.author_id = user.id', array('username', 'lastname', 'firstname'), 'left');
         $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
         $resultSet = $statement->execute();
         foreach ($resultSet as $row) {
@@ -34,40 +34,37 @@ class PostTable
         return $rows;
     }
 
-    public function getPost($id)
+    public function getPrestation($id)
     {
         $post =new Post();
         $select = new Select();
-        $select->from('post');
-        $select->join('user', 'post.author_id = user.id', array('username', 'lastname', 'firstname'), 'left');
-        $select->where->equalTo('post.id', $id);
+        $select->from('prestation');
+        //$select->join('user', 'post.author_id = user.id', array('username', 'lastname', 'firstname'), 'left');
+        $select->where->equalTo('prestation.id', $id);
         $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
         $resultSet = $statement->execute();
         $post->exchangeArray($resultSet->current());
         return $post;
     }
-    public function savePost(Post $post)
+    public function savePrestation(Prestation $prestation)
     {
         $data = [
-            'id'                    =>$post->id,
-            'status'                =>$post->status,
-            'title'                 =>$post->title,
-            'content'               =>$post->content,
-            'excerpt'               =>$post->excerpt,
-            'updated'               =>new Expression('NOW()'),
+            'id'                        =>$prestation->id,
+            'intitule'                  =>$prestation->intitule,
+            'intitule_devis'            =>$prestation->intitule_devis,
+            'description'               =>$prestation->description,
         ];
-        $id = (int) $post->id;
+        $id = (int) $prestation->id;
 
         if ($id === 0) {
-            $data['post_date'] = new Expression('NOW()');
-            $data['author_id'] = $post->author_id;
+            $data['date'] = new Expression('NOW()');
             $this->tableGateway->insert($data);
             return 1;
         }
 
         if (! $this->getPost($id)) {
             throw new RuntimeException(sprintf(
-                'Cannot update post with identifier %d; does not exist',
+                'Cannot update prestation with identifier %d; does not exist',
                 $id
             ));
         }
@@ -75,7 +72,7 @@ class PostTable
         $this->tableGateway->update($data, ['id' => $id]);
     }
 
-    public function deletePost($id)
+    public function deletePrestation($id)
     {
         $this->tableGateway->delete(['id' => (int) $id]);
     }

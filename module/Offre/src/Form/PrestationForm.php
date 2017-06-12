@@ -1,16 +1,15 @@
 <?php
 
-namespace Blog\Form;
+namespace Offre\Form;
 
 use Zend\Form\Form;
 
-
-class PostForm extends Form
+class PrestationForm extends Form
 {
     public function __construct($name = null)
     {
         // We will ignore the name provided to the constructor
-        parent::__construct('post');
+        parent::__construct('prestation');
         $this->setAttribute('class', 'form-horizontal push-10-t');
         
         $this->add([
@@ -18,56 +17,42 @@ class PostForm extends Form
             'type' => 'hidden',
         ]);
         $this->add([
-            'name' => 'title',
+            'name' => 'intitule',
             'type' => 'text',
             'attributes' => [
                 'class' => 'form-control'
             ],
             'options' => [
-                'label' => 'Username',
+                'label' => 'Intitule',
                 
             ],
         ]);
         $this->add([
-            'name' => 'content',
+            'name' => 'intitule_devis',
+            'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
+            'options' => [
+                'label' => 'Intitule devis',
+            ],
+        ]);
+        $this->add([
+            'name' => 'description',
             'type' => 'textarea',
             'attributes' => [
                 'class' => 'form-control'
             ],
             'options' => [
-                'label' => 'Content',
+                'label' => 'Description',
             ],
         ]);
-        $this->add([
-            'name' => 'excerpt',
-            'type' => 'textarea',
-            'attributes' => [
-                'class' => 'form-control'
-            ],
-            'options' => [
-                'label' => 'Excerpt',
-            ],
-        ]);
-        $this->add([
-            'name' => 'status',
-            'type' => 'select',
-            'attributes' => [
-                'class' => 'form-control'
-            ],
-            'options' => [
-                'label' =>'Status',
-                'value_options' =>[
-                'publish'   => 'Publish',
-                'draft'     => 'Draft',
-                'pending'   => 'Pending'
-            ]
-            ],
-        ]);
+
         $this->add([
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => [
-                'value'     => 'Add new user',
+                'value'     => 'Ajouter prestation',
                 'id'        => 'submitbutton',
                 'class'     => 'btn btn-primary'
             ],

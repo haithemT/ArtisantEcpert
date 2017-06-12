@@ -26,42 +26,30 @@ class PrestationController extends AbstractActionController
  	public function indexAction()
     {
         return new ViewModel([
-            'posts' => $this->table->fetchAll(),
+            'prestations' => $this->table->fetchAll(),
         ]);
 
     }
 
     public function addAction()
     {
-        $form = new PostForm();
+        $form = new PrestationForm();
         $request = $this->getRequest();
-        $postStatusList = [
-            'publish'   => $this->translator()->translate('Publish'),
-            'draft'     => $this->translator()->translate('Draft'),
-            'pending'   => $this->translator()->translate('Pending')
-        ];
-        $form->get('status')->setAttribute('options',$postStatusList);
         if (! $request->isPost()) {
             return ['form' => $form];
         }
 
-        $post = new Post();
+        $prestation = new Prestation();
 
-        $form->setInputFilter($post->getInputFilter());
+        $form->setInputFilter($prestation->getInputFilter());
         $form->setData($request->getPost());
 
         if (! $form->isValid()) {
             return ['form' => $form];
         }   
-        $post->exchangeArray($form->getData());
-        /**
-         * 
-         * SET CONNECTED USER IP
-         * @todo get the real connected user ip not the proxied ip
-         */
-        $post->author_id=$this->identity()['id'];        
-        $this->table->savePost($post);
-        return $this->redirect()->toRoute('blog');
+        $prestation->exchangeArray($form->getData());       
+        $this->table->savePost($prestation);
+        return $this->redirect()->toRoute('prestation');
     }
 
     public function editAction()
@@ -69,22 +57,20 @@ class PrestationController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (0 === $id) {
-            return $this->redirect()->toRoute('blog', ['action' => 'add']);
+            return $this->redirect()->toRoute('prestation', ['action' => 'add']);
         }
 
-        // Retrieve the user with the specified id. Doing so raises
+        // Retrieve the prestation with the specified id. Doing so raises
         // an exception if the user is not found, which should result
         // in redirecting to the landing page.
         try {
-            $post = $this->table->getPost($id);
+            $prestation = $this->table->getPrestation($id);
         } catch (\Exception $e) {
-            return $this->redirect()->toRoute('blog', ['action' => 'index']);
+            return $this->redirect()->toRoute('prestation', ['action' => 'index']);
         }
 
-        $form = new PostForm();
-        $form->bind($post);
-        $form->get('submit')->setAttribute('value', 'Edit');
-        $form->get('status')->setValue($post->status);
+        $form = new PrestationForm();
+        $form->bind($prestation);
         $request = $this->getRequest();
         $viewData = ['id' => $id, 'form' => $form];
 
@@ -98,17 +84,17 @@ class PrestationController extends AbstractActionController
         if (! $form->isValid()) {
             return $viewData;
         }
-        $this->table->savePost($post);
+        $this->table->savePrestation($prestation);
 
-        // Redirect to users list
-        return $this->redirect()->toRoute('blog', ['action' => 'index']);
+        // Redirect to prestation list
+        return $this->redirect()->toRoute('prestation', ['action' => 'index']);
     }
 
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('post');
+            return $this->redirect()->toRoute('prestation');
         }
 
         $request = $this->getRequest();
@@ -116,17 +102,17 @@ class PrestationController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $id = (int) $request->getPost('id');
-                $this->table->deletePost($id);
+                $id = (int) $request->getPrestation('id');
+                $this->table->deletePrestation($id);
             }
 
             // Redirect to list of posts
-            return $this->redirect()->toRoute('blog');
+            return $this->redirect()->toRoute('prestation');
         }
 
         return [
             'id'    => $id,
-            'post' => $this->table->getPost($id),
+            'prestation' => $this->table->getPrestation($id),
         ];
     }
 }

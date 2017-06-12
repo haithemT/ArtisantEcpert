@@ -27,10 +27,16 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $serviceManager = $e->getApplication()->getServiceManager();
         $moduleRouteListener->attach($eventManager);
+        $matches = $e->getRouteMatch();
+        $controller = $matches->getParam('controller');
+        $module_array = explode('\\', $controller);
+        $module = $module_array[0];
         // The following line instantiates the SessionManager and automatically
         // makes the SessionManager the 'default' one.
         $sessionManager = $serviceManager->get(SessionManager::class);
         $eventManager->attach('dispatch', [$this, 'checkLogin']);
+        $this->loadScripts($e, $module);
+        $this->loadStyles($e, $module);
     }
     public function getConfig()
     {
@@ -53,6 +59,43 @@ class Module
                 return $target->redirect()->toRoute('login');
             }
         }
-       
+    }
+    
+        public function loadScripts($e, $module) {
+        $sm = $e->getApplication()->getServiceManager();
+        $config = $sm->get('Config');
+        //Check filesLoading array in configuration for the current module
+        $filesLoadingConfig = isset($config['filesLoading']) ? $config['filesLoading'] : array();
+        if ($filesLoadingConfig && isset($filesLoadingConfig[$module])) {
+            $scriptsList = isset($filesLoadingConfig[$module]['scripts']) ? $filesLoadingConfig[$module]['scripts'] : array();
+            //load view helper manager
+            $viewHelperManager = $sm->get('viewhelpermanager');
+            $inlineScript = $viewHelperManager->get('inlineScript');
+            $basePathPlugin = $viewHelperManager->get('basePath');
+            $basePath = $basePathPlugin();
+            //add scripts inline in the bottom of the body
+            foreach ($scriptsList as $value) {
+                $inlineScript->appendFile($basePath . $value);
+            }
+        }
+    }
+
+    public function loadStyles($e, $module) {
+        $sm = $e->getApplication()->getServiceManager();
+        $config = $sm->get('Config');
+        //Check filesLoading array in configuration for the current module
+        $filesLoadingConfig = isset($config['filesLoading']) ? $config['filesLoading'] : array();
+        if ($filesLoadingConfig && isset($filesLoadingConfig[$module])) {
+            $stylesList = isset($filesLoadingConfig[$module]['styles']) ? $filesLoadingConfig[$module]['styles'] : array();
+            //load view helper manager
+            $viewHelperManager = $sm->get('viewhelpermanager');
+            $headLink = $viewHelperManager->get('headLink');
+            $basePathPlugin = $viewHelperManager->get('basePath');
+            $basePath = $basePathPlugin();
+            //add styles in header
+            foreach ($stylesList as $value) {
+                $headLink->prependStylesheet(array('href' => $basePath . $value, 'rel' => 'stylesheet', 'media' => 'all'));
+            }
+        }
     }
 }
