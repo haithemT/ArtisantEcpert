@@ -1,0 +1,67 @@
+<?php
+$title = $this->translate('List des prestation');
+$this->headTitle($title);
+?>
+<!-- Page Header -->
+<div class="content bg-gray-lighter">
+    <div class="row items-push">
+        <div class="col-sm-7">
+            <h1 class="page-heading">
+                <?= $this->escapeHtml($title) ?>
+            </h1>
+        </div>
+        <div class="col-sm-5 text-right hidden-xs">
+            <a href="<?= $this->url('prestation', ['action' => 'add']) ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo $this->translate('Ajouter une prestation');?></a>
+        </div>
+        <!--<div class="col-sm-5 text-right hidden-xs">
+            <ol class="breadcrumb push-10-t">
+                <li>Tables</li>
+                <li><a class="link-effect" href="">DataTables</a></li>
+            </ol>
+        </div>-->
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="content">
+    <!-- Dynamic Table Full -->
+    <div class="block">
+        <div class="block-content">
+            <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/base_tables_datatables.js -->
+            <table class="table table-bordered table-striped js-dataTable-full">
+                <thead>
+                    <tr>
+                        <th><?php echo $this->translate('ID');?></th>
+                        <th><?php echo $this->translate('Intitulé');?></th>
+                        <th><?php echo $this->translate('Intitulé devis');?></th>
+                        <th><?php echo $this->translate('Description');?></th>
+                        <th class="text-center" style="width: 10%;"><?php echo $this->translate('Actions');?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if(count($prestations)>0):
+                        foreach ($prestations as $prestation) : ?>
+                            <tr>
+                                <td><?= $this->escapeHtml($prestation['id']) ?></td>
+                                <td><?= $this->escapeHtml($prestation['intitule']) ?></td>
+                                <td><?= $this->escapeHtml($prestation['intitule_devis']) ?></td>
+                                <td><?= $this->escapeHtml($prestation['description']) ?></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="<?= $this->url('prestation', ['action' => 'edit', 'id' => $prestation['id']]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Editer prestation');?>"><i class="fa fa-pencil"></i></a>
+                                        <a href="<?= $this->url('prestation', ['action' => 'delete', 'id' => $prestation['id']]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Supprimer prestation');?>"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach;
+                            else:
+                        ?>
+                            <tr><td colspan="7"><?php echo $this->translate('Aucune prestation trouvée');?></td></tr>
+                        <?php endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- END Page Header -->

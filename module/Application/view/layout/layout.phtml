@@ -351,10 +351,21 @@
                                             <a href="<?php echo $this->url('feedback'); ?>"><?=$this->translate('List');?></a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo $this->url('blog',['controller'=>'feedback','action'=>'add']); ?>"><?=$this->translate('Add');?></a>
+                                            <a href="<?php echo $this->url('feedback',['controller'=>'feedback','action'=>'add']); ?>"><?=$this->translate('Add');?></a>
                                         </li>
                                     </ul>
-                                </li>                                
+                                </li>
+                                <li>
+                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-note"></i><span class="sidebar-mini-hide"><?=$this->translate('Prestation');?></span></a>
+                                    <ul>
+                                        <li>
+                                            <a href="<?php echo $this->url('prestation'); ?>"><?=$this->translate('List');?></a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo $this->url('prestation',['controller'=>'prestation','action'=>'add']); ?>"><?=$this->translate('Add');?></a>
+                                        </li>
+                                    </ul>
+                                </li> 
                             </ul>
                         </div>
                         <!-- END Side Content -->

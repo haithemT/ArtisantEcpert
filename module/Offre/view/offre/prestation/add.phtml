@@ -1,0 +1,85 @@
+<?php
+$title = $this->translate('Ajouter une nouvelle prestation');
+$this->headTitle($title);
+?>
+<?php
+$form->setAttribute('action', $this->url('prestation', ['action' => 'add']));
+$form->get('submit')->setValue($this->translate('Ajouter Prestation'));
+$form->prepare();
+?>
+
+
+<div class="content bg-gray-lighter">
+    <div class="row items-push">
+        <div class="col-sm-7">
+            <h1 class="page-heading">
+                <?= $this->escapeHtml($title) ?>
+            </h1>
+        </div>
+        <div class="col-sm-5 text-right hidden-xs">
+            <ol class="breadcrumb push-10-t">
+                <li><a class="link-effect" href="<?php echo $this->url('blog'); ?>"><?php echo $this->translate('Liste des prestation');?></a></li>
+                <li><?= $this->escapeHtml($title) ?></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="content content-narrow">
+    <?php echo $this->form()->openTag($form);?>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="block">
+                <div class="block-header">
+                    <h3 class="block-title"><?php echo $this->translate('General');?></h3>
+                    <!--<ul class="block-options">
+                        <li>
+                            <button type="button"><i class="si si-settings"></i></button>
+                        </li>
+                    </ul>-->
+                </div>
+                <div class="block-content block-content-narrow">
+                    <?php echo $this->formHidden($form->get('id'));?>
+
+                    <div class="form-group <?php echo !empty($form->get('intitule')->getMessages())?'has-error':'';?>">
+                        <div class="col-sm-12">
+                            <div class="form-material">
+                                <label><?php echo $this->translate('Intitule');?></label>
+                                <?php echo $this->formElement($form->get('intitule')); ?>
+                                <div class="help-block text-right animated fadeInDown form-error">
+                                    <?php echo $this->formElementErrors($form->get('intitule'));?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group  <?php echo !empty($form->get('intitule_devis')->getMessages())?'has-error':'';?>">
+                        <div class="col-sm-12">
+                            <div class="form-material">
+                                <label><?php echo $this->translate('Intitule devis');?></label>
+                                <?php echo $this->formElement($form->get('intitule_devis')); ?>
+                                <div class="help-block text-right animated fadeInDown form-error">
+                                    <?php echo $this->formElementErrors($form->get('intitule_devis'));?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group  <?php echo !empty($form->get('description')->getMessages())?'has-error':'';?>">
+                        <div class="col-sm-12">
+                            <div class="form-material">
+                                <label><?php echo $this->translate('Description');?></label>
+                                <?php echo $this->formElement($form->get('description')); ?>
+                                <div class="help-block text-right animated fadeInDown form-error">
+                                    <?php echo $this->formElementErrors($form->get('description'));?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <?php echo $this->formElement($form->get('csrf')); ?>
+                        <?php echo $this->formSubmit($form->get('submit'));?>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo $this->form()->closeTag();?>
+</div>

@@ -1,7 +1,7 @@
 <?php
 
-$title = 'Delete post';
-$url   = $this->url('blog', ['action' => 'delete', 'id' => $id]);
+$title = 'Supprimer Prestation';
+$url   = $this->url('prestation', ['action' => 'delete', 'id' => $prestation->id]);
 
 $this->headTitle($title);
 ?>
@@ -14,7 +14,7 @@ $this->headTitle($title);
         </div>
         <div class="col-sm-5 text-right hidden-xs">
             <ol class="breadcrumb push-10-t">
-                <li><a class="link-effect" href="<?php echo $this->url('blog'); ?>"><?php echo $this->translate('Posts list');?></a></li>
+                <li><a class="link-effect" href="<?php echo $this->url('prestation'); ?>"><?php echo $this->translate('Liste des prestation');?></a></li>
                 <li><?= $this->escapeHtml($title) ?></li>
             </ol>
         </div>
@@ -26,11 +26,11 @@ $this->headTitle($title);
             <div class="block">
                 <div class="block-content block-content-narrow text-center">
                     <p>
-                        <?=$this->translate('Are you sure that you want to delete the post');?>: <b>"<?= $this->escapeHtml($post->title);?>"</b>?
+                        <?=$this->translate('Are you sure that you want to delete the prestation');?>: <b>"<?= $this->escapeHtml($prestation->intitule);?>"</b>?
                     </p>
                     <form class="form" action="<?= $url ?>" method="post">
                         <div class="form-group">
-                            <input type="hidden" name="id" value="<?= (int) $post->id ?>" />
+                            <input type="hidden" name="id" value="<?= (int) $prestation->id ?>" />
                             <input type="submit" class="btn btn-danger" name="del" value="Yes" />
                             <input type="submit" class="btn btn-success" name="del" value="No" />
                         </div>
@@ -40,4 +40,5 @@ $this->headTitle($title);
         </div>
     </div>
 </div>
+
 

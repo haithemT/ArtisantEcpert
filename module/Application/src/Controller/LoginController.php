@@ -9,6 +9,7 @@ use Zend\Authentication\Result;
 use User\Model\User;
 use Application\Form\LoginForm;
 use User\Model\UserTable;
+use Zend\Session\SessionManager;
 
 
 /**
@@ -18,11 +19,13 @@ class LoginController extends AbstractActionController
 {
     private  $authService;
     private  $userTable;
+    private  $sessionManager;
     
-    public function __construct(AuthenticationService $authService,UserTable $userTable)
+    public function __construct(AuthenticationService $authService,UserTable $userTable, SessionManager $sessionManager)
     {
         $this->authService = $authService;
         $this->userTable = $userTable;
+        $this->sessionManager = $sessionManager;
     }
     public function loginAction()
     {
@@ -81,8 +84,7 @@ class LoginController extends AbstractActionController
                     );
                     // set remember me
                     if ($result->getCode()==Result::SUCCESS ) {
-                        // Session cookie will expire in (14 days).
-                        $this->sessionManager->rememberMe(60*60*24*14);
+                        $this->sessionManager->rememberMe();
                     }elseif ($result->getCode() == Result::SUCCESS) {
                     // Get redirect URL.
                     $redirectUrl = $this->params()->fromPost('redirect_url', '');

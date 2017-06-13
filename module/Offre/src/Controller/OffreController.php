@@ -7,14 +7,14 @@
 
 namespace Offre\Controller;
 
-use Offre\Model\PrestationTable;
-use Offre\Form\PrestationForm;
-use Offre\Model\Prestation;
+use Offre\Model\OffreTable;
+use Offre\Form\OffreForm;
+use Offre\Model\Offre;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class PrestationController extends AbstractActionController
+class OffreController extends AbstractActionController
 {
     private $table;
 
@@ -26,30 +26,30 @@ class PrestationController extends AbstractActionController
  	public function indexAction()
     {
         return new ViewModel([
-            'prestations' => $this->table->fetchAll(),
+            'offres' => $this->table->fetchAll(),
         ]);
 
     }
 
     public function addAction()
     {
-        $form = new PrestationForm();
+        $form = new OffreForm();
         $request = $this->getRequest();
         if (! $request->isPost()) {
             return ['form' => $form];
         }
 
-        $prestation = new Prestation();
+        $offre = new Offre();
 
-        $form->setInputFilter($prestation->getInputFilter());
+        $form->setInputFilter($offre->getInputFilter());
         $form->setData($request->getPost());
 
         if (! $form->isValid()) {
             return ['form' => $form];
         }   
-        $prestation->exchangeArray($form->getData());       
-        $this->table->savePrestation($prestation);
-        return $this->redirect()->toRoute('prestation');
+        $offre->exchangeArray($form->getData());       
+        $this->table->saveOffre($offre);
+        return $this->redirect()->toRoute('offre');
     }
 
     public function editAction()
@@ -57,20 +57,20 @@ class PrestationController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (0 === $id) {
-            return $this->redirect()->toRoute('prestation', ['action' => 'add']);
+            return $this->redirect()->toRoute('offre', ['action' => 'add']);
         }
 
         // Retrieve the prestation with the specified id. Doing so raises
         // an exception if the user is not found, which should result
         // in redirecting to the landing page.
         try {
-            $prestation = $this->table->getPrestation($id);
+            $offre = $this->table->getOffre($id);
         } catch (\Exception $e) {
-            return $this->redirect()->toRoute('prestation', ['action' => 'index']);
+            return $this->redirect()->toRoute('offre', ['action' => 'index']);
         }
 
-        $form = new PrestationForm();
-        $form->bind($prestation);
+        $form = new OffreForm();
+        $form->bind($offre);
         $request = $this->getRequest();
         $viewData = ['id' => $id, 'form' => $form];
 
@@ -84,17 +84,17 @@ class PrestationController extends AbstractActionController
         if (! $form->isValid()) {
             return $viewData;
         }
-        $this->table->savePrestation($prestation);
+        $this->table->saveOffre($offre);
 
         // Redirect to prestation list
-        return $this->redirect()->toRoute('prestation', ['action' => 'index']);
+        return $this->redirect()->toRoute('offre', ['action' => 'index']);
     }
 
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('prestation');
+            return $this->redirect()->toRoute('offre');
         }
 
         $request = $this->getRequest();
@@ -102,17 +102,17 @@ class PrestationController extends AbstractActionController
             $del = $request->getPost('del', 'No');
 
             if ($del == 'Yes') {
-                $id = (int) $request->getPrestation('id');
-                $this->table->deletePrestation($id);
+                $id = (int) $request->getOffre('id');
+                $this->table->deletePOffre($id);
             }
 
-            // Redirect to list of prestations
-            return $this->redirect()->toRoute('prestation');
+            // Redirect to list of offre
+            return $this->redirect()->toRoute('offre');
         }
 
         return [
             'id'    => $id,
-            'prestation' => $this->table->getPrestation($id),
+            'offre' => $this->table->getOffre($id),
         ];
     }
 }

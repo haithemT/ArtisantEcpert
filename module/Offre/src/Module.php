@@ -35,6 +35,16 @@ class Module implements ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Model\Prestation());
                     return new TableGateway('prestation', $dbAdapter, null, $resultSetPrototype);
                 },
+                Model\OffreTable::class => function($container) {
+                    $tableGateway = $container->get(Model\OffreTableGateway::class);
+                    return new Model\OffreTable($tableGateway);
+                },
+                Model\OffreTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Offre());
+                    return new TableGateway('offre', $dbAdapter, null, $resultSetPrototype);
+                },
             ],
         ];
     }
@@ -46,6 +56,11 @@ class Module implements ConfigProviderInterface
                 Controller\PrestationController::class => function($container) {
                     return new Controller\PrestationController(
                         $container->get(Model\PrestationTable::class)
+                    );
+                },
+                Controller\OffreController::class => function($container) {
+                    return new Controller\OffreController(
+                        $container->get(Model\OffreTable::class)
                     );
                 },
             ],

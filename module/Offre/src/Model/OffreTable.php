@@ -5,7 +5,8 @@ use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
-class PrestationTable
+
+class OffreTable
 {
     private $tableGateway;
 

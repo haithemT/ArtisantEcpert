@@ -23,7 +23,7 @@ return [
                         'id'     => '[0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\BlogController::class,
+                        'controller' => Controller\OffreController::class,
                         'action'     => 'index',
                     ],
                 ],
@@ -37,7 +37,7 @@ return [
                         'id'     => '[0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\BlogController::class,
+                        'controller' => Controller\PrestationController::class,
                         'action'     => 'index',
                     ],
                 ],
