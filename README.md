@@ -1,4 +1,6 @@
-# ZendSkeletonApplication
+# Artisant Expert
+
+[![Build Status](https://travis-ci.org/haithemT/ArtisantEcpert.svg?branch=master)](https://travis-ci.org/haithemT/ArtisantEcpert)
 
 ## Introduction
 
