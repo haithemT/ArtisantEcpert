@@ -98,6 +98,18 @@ class UserForm extends Form
                 'label' => 'Avatar',
             ],
         ]);
+
+        $this->add([
+            'name' => 'description',
+            'type' => 'textarea',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
+            'options' => [
+                'label' => 'Description',
+            ],
+        ]);
+
         $this->add([
             'name' => 'submit',
             'type' => 'submit',
@@ -122,13 +134,13 @@ class UserForm extends Form
             'options' => [
                 'value_options' => [
                     '1' => [
-                            'label' => '<span></span> Client',
+                            'label' => '<span></span> Speaker',
                             'label_attributes' => ['class' => 'css-input css-radio css-radio-primary push-10-r'],
                             'disable_html_escape' => true,
                             'value' => '1'
                     ],
                     '2' =>  [
-                            'label' => '<span></span> Artisant',
+                            'label' => '<span></span> Attendee',
                             'label_attributes' => ['class' => 'css-input css-radio css-radio-primary push-10-r'],
                             'value' => '2'
                     ],

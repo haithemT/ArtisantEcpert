@@ -32,6 +32,7 @@ class UserTable
     public $facebook_id;
     public $linkedin_id;
     public $avatar_path;
+    public $description;
     
     public function __construct(TableGatewayInterface $tableGateway)
     {
@@ -87,6 +88,7 @@ class UserTable
             'facebook_id'           => $user->facebook_id,
             'linkedin_id'           => $user->linkedin_id,
             'avatar_path'           => $user->avatar_path,
+            'description'           => $user->description,
             //'roles'                 => (!isset($user->roles) || $user->roles==null) ? 'user':$user->roles,
         ];
         $id = (int) $user->id;

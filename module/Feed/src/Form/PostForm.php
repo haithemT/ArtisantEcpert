@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Form;
+namespace Feed\Form;
 
 use Zend\Form\Form;
 
@@ -80,6 +80,16 @@ class PostForm extends Form
                     'timeout' => 600
                 ]
             ]
+        ]);
+        $this->add([
+            'name' => 'picture',
+            'type' => 'file',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
+            'options' => [
+                'label' => 'Image/Video',
+            ],
         ]);
     }
 }

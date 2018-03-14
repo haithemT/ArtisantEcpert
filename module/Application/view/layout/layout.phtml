@@ -334,13 +334,13 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-note"></i><span class="sidebar-mini-hide"><?=$this->translate('Blog');?></span></a>
+                                    <a class="nav-submenu" data-toggle="nav-submenu" href="#"><i class="si si-note"></i><span class="sidebar-mini-hide"><?=$this->translate('The Wall');?></span></a>
                                     <ul>
                                         <li>
-                                            <a href="<?php echo $this->url('blog'); ?>"><?=$this->translate('List');?></a>
+                                            <a href="<?php echo $this->url('feed'); ?>"><?=$this->translate('Feed List');?></a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo $this->url('blog',['controller'=>'blog','action'=>'add']); ?>"><?=$this->translate('Add');?></a>
+                                            <a href="<?php echo $this->url('feed',['controller'=>'feed','action'=>'add']); ?>"><?=$this->translate('Add Feed');?></a>
                                         </li>
                                     </ul>
                                 </li>

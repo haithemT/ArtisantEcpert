@@ -2,19 +2,19 @@
 /**
  * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
  * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @license   http://framework.zend.com/license/new-bsd New BSD License 
  */
 
-namespace Blog\Controller;
+namespace Feed\Controller;
 
-use Blog\Model\PostTable;
-use Blog\Form\PostForm;
-use Blog\Model\Post;
+use Feed\Model\PostTable;
+use Feed\Form\PostForm;
+use Feed\Model\Post;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class BlogController extends AbstractActionController
+class FeedController extends AbstractActionController
 {
     private $table;
 
@@ -61,7 +61,7 @@ class BlogController extends AbstractActionController
          */
         $post->author_id=$this->identity()['id'];        
         $this->table->savePost($post);
-        return $this->redirect()->toRoute('blog');
+        return $this->redirect()->toRoute('feed');
     }
 
     public function editAction()
@@ -69,7 +69,7 @@ class BlogController extends AbstractActionController
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (0 === $id) {
-            return $this->redirect()->toRoute('blog', ['action' => 'add']);
+            return $this->redirect()->toRoute('feed', ['action' => 'add']);
         }
 
         // Retrieve the user with the specified id. Doing so raises
@@ -78,7 +78,7 @@ class BlogController extends AbstractActionController
         try {
             $post = $this->table->getPost($id);
         } catch (\Exception $e) {
-            return $this->redirect()->toRoute('blog', ['action' => 'index']);
+            return $this->redirect()->toRoute('feed', ['action' => 'index']);
         }
 
         $form = new PostForm();
@@ -101,7 +101,7 @@ class BlogController extends AbstractActionController
         $this->table->savePost($post);
 
         // Redirect to users list
-        return $this->redirect()->toRoute('blog', ['action' => 'index']);
+        return $this->redirect()->toRoute('feed', ['action' => 'index']);
     }
 
     public function deleteAction()
@@ -121,7 +121,7 @@ class BlogController extends AbstractActionController
             }
 
             // Redirect to list of posts
-            return $this->redirect()->toRoute('blog');
+            return $this->redirect()->toRoute('feed');
         }
 
         return [

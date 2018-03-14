@@ -16,6 +16,7 @@ class User implements InputFilterAwareInterface
     public $username;
     public $firstname;
     public $lastname;
+    public $description;
     public $email;
     public $enabled;
     public $password;
@@ -42,6 +43,7 @@ class User implements InputFilterAwareInterface
         $this->username 				= (isset($data['username'])) ? $data['username'] : null;
         $this->lastname 				= (isset($data['lastname'])) ? $data['lastname'] : null;
         $this->firstname 				= (isset($data['firstname'])) ? $data['firstname'] : null;
+        $this->description 				= (isset($data['description'])) ? $data['description'] : null;
         $this->email 					= (isset($data['email'])) ? $data['email'] : null;
         $this->password 				= (isset($data['password'])) ? $data['password'] : null;
         $this->enabled 					= (isset($data['enabled'])) ? $data['enabled'] : null;      
@@ -87,6 +89,7 @@ class User implements InputFilterAwareInterface
             'facebook_id'           =>$this->facebook_id,
             'linkedin_id'           =>$this->linkedin_id,
             'avatar_path'           =>$this->avatar_path,
+            'description'           =>$this->description,
         ];
     }
     

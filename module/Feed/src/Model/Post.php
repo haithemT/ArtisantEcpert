@@ -1,5 +1,5 @@
 <?php
-namespace Blog\Model;
+namespace Feed\Model;
 
 use DomainException;
 use Zend\Filter\StringTrim;
@@ -27,29 +27,31 @@ class Post implements InputFilterAwareInterface
 
     public function exchangeArray($data)
     {
-        $this->id 					= (isset($data['id'])) ? $data['id'] : null;
-        $this->author_id 				= (isset($data['author_id'])) ? $data['author_id'] : null;
-        $this->status                                   = (isset($data['status'])) ? $data['status'] : null;
-        $this->title                                    = (isset($data['title'])) ? $data['title'] : null;
-        $this->content 					= (isset($data['content'])) ? $data['content'] : null;
-        $this->excerpt                                  = (isset($data['excerpt'])) ? $data['excerpt'] : null;
-        $this->post_date                                = (isset($data['post_date'])) ? $data['post_date'] : null;      
-        $this->updated                                  = (isset($data['updated'])) ? $data['updated'] : null;
-        $this->author                                   = (isset($data['firstname']) && isset($data['lastname'])) ? $data['firstname'].' '.$data['lastname'] : null;
+        $this->id 		    = (isset($data['id'])) ? $data['id'] : null;
+        $this->author_id 	= (isset($data['author_id'])) ? $data['author_id'] : null;
+        $this->status       = (isset($data['status'])) ? $data['status'] : null;
+        $this->title        = (isset($data['title'])) ? $data['title'] : null;
+        $this->content 		= (isset($data['content'])) ? $data['content'] : null;
+        $this->excerpt      = (isset($data['excerpt'])) ? $data['excerpt'] : null;
+        $this->post_date    = (isset($data['post_date'])) ? $data['post_date'] : null;      
+        $this->updated      = (isset($data['updated'])) ? $data['updated'] : null;
+        $this->picture      = (isset($data['picture'])) ? $data['picture'] : null;
+        $this->author       = (isset($data['firstname']) && isset($data['lastname'])) ? $data['firstname'].' '.$data['lastname'] : null;
     }   
     
     public function getArrayCopy()
     {
         return [
-            'id'                    =>$this->id,
-            'author_id'             =>$this->author_id,
-            'status'                =>$this->status,
-            'title'                 =>$this->title,
-            'content'               =>$this->content,
-            'excerpt'               =>$this->excerpt, 
-            'post_date'             =>$this->post_date,
-            'updated'               =>$this->updated,
-            'author'                =>$this->author
+            'id'         => $this->id,
+            'author_id'  => $this->author_id,
+            'status'     => $this->status,
+            'title'      => $this->title,
+            'content'    => $this->content,
+            'excerpt'    => $this->excerpt, 
+            'post_date'  => $this->post_date,
+            'updated'    => $this->updated,
+            'author'     => $this->author,
+            'picture'     => $this->picture
         ];
     }
     

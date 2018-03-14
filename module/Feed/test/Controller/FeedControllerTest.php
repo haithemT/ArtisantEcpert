@@ -5,13 +5,13 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace BlogTest\Controller;
+namespace FeedTest\Controller;
 
-use Blog\Controller\BlogController;
+use Feed\Controller\FeedController;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
-class BlogControllerTest extends AbstractHttpControllerTestCase
+class FeedControllerTest extends AbstractHttpControllerTestCase
 {
     protected $traceError = true;
     public function setUp()
@@ -32,12 +32,12 @@ class BlogControllerTest extends AbstractHttpControllerTestCase
 
     public function testIndexActionCanBeAccessed()
     {
-        $this->dispatch('/blog');
+        $this->dispatch('/feed');
         $this->assertResponseStatusCode(200);
-        $this->assertModuleName('Blog');
-        $this->assertControllerName(UserController::class); // as specified in router's controller name alias
-        $this->assertControllerClass('BlogController');
-        $this->assertMatchedRouteName('blog');
+        $this->assertModuleName('Feed');
+        $this->assertControllerName(FeedController::class); // as specified in router's controller name alias
+        $this->assertControllerClass('FeedController');
+        $this->assertMatchedRouteName('feed');
     }
 
     public function testIndexActionViewModelTemplateRenderedWithinLayout()

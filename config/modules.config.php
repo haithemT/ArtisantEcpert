@@ -35,7 +35,7 @@ return [
     'Zend\Mvc\I18n',
     'Zend\I18n',
     'User',
-    'Blog',
+    'Feed',
     'Offre',
     'Application',
     

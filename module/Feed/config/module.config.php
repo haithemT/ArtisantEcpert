@@ -5,7 +5,7 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Blog;
+namespace Feed;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
@@ -14,16 +14,16 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 return [
     'router' => [
         'routes' => [
-            'blog' => [
+            'feed' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route' => '/blog[/:action[/:id]]',
+                    'route' => '/feed[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\BlogController::class,
+                        'controller' => Controller\FeedController::class,
                         'action'     => 'index',
                     ],
                 ],

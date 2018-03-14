@@ -1,5 +1,5 @@
 <?php
-namespace Blog\Model;
+namespace Feed\Model;
 
 use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
@@ -17,6 +17,7 @@ class PostTable
     public $excerpt;
     public $post_date;
     public $updated;
+    public $picture;
     
     public function __construct(TableGatewayInterface $tableGateway)
     {
@@ -57,6 +58,7 @@ class PostTable
             'title'                 =>$post->title,
             'content'               =>$post->content,
             'excerpt'               =>$post->excerpt,
+            'picture'               =>$post->picture,
             'updated'               =>new Expression('NOW()'),
         ];
         $id = (int) $post->id;

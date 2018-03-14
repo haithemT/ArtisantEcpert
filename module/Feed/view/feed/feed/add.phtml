@@ -1,13 +1,10 @@
 <?php
-$title = $this->translate('Edit post');
+$title = $this->translate('Add new post');
 $this->headTitle($title);
 ?>
 <?php
-$form->setAttribute('action', $this->url('blog', [
-    'action' => 'edit',
-    'id'     => $id,
-]));
-$form->get('submit')->setValue($this->translate('Edit post'));
+$form->setAttribute('action', $this->url('feed', ['action' => 'add']));
+$form->get('submit')->setValue($this->translate('Add post'));
 $form->prepare();
 ?>
 
@@ -21,7 +18,7 @@ $form->prepare();
         </div>
         <div class="col-sm-5 text-right hidden-xs">
             <ol class="breadcrumb push-10-t">
-                <li><a class="link-effect" href="<?php echo $this->url('blog'); ?>"><?php echo $this->translate('Posts list');?></a></li>
+                <li><a class="link-effect" href="<?php echo $this->url('feed'); ?>"><?php echo $this->translate('Posts list');?></a></li>
                 <li><?= $this->escapeHtml($title) ?></li>
             </ol>
         </div>
@@ -72,6 +69,17 @@ $form->prepare();
                                 <?php echo $this->formElement($form->get('excerpt')); ?>
                                 <div class="help-block text-right animated fadeInDown form-error">
                                     <?php echo $this->formElementErrors($form->get('excerpt'));?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group  <?php echo !empty($form->get('picture')->getMessages())?'has-error':'';?>">
+                        <div class="col-sm-12">
+                            <div class="form-material">
+                                <label><?php echo $this->translate('Image/Video');?></label>
+                                <?php echo $this->formElement($form->get('picture')); ?>
+                                <div class="help-block text-right animated fadeInDown form-error">
+                                    <?php echo $this->formElementErrors($form->get('picture'));?>
                                 </div>
                             </div>
                         </div>

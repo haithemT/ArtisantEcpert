@@ -5,7 +5,7 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Blog;
+namespace Feed;
 
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\ResultSet\ResultSet;
@@ -43,8 +43,8 @@ class Module implements ConfigProviderInterface
     {
         return [
             'factories' => [
-                Controller\BlogController::class => function($container) {
-                    return new Controller\BlogController(
+                Controller\FeedController::class => function($container) {
+                    return new Controller\FeedController(
                         $container->get(Model\PostTable::class)
                     );
                 },

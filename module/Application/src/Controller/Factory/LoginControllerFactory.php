@@ -13,7 +13,7 @@ class LoginControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {   
         $authService = $container->get(\Zend\Authentication\AuthenticationService::class);
-        $sessionManager = $container->get(Zend\Session\SessionManager::class);
+        $sessionManager = $container->get(\Zend\Session\SessionManager::class);
         $userTable = $container->get(\User\Model\UserTable::class);
         return new LoginController($authService,$userTable,$sessionManager);
     }
