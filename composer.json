@@ -36,6 +36,7 @@
             "Application\\": "module/Application/src/",
             "User\\": "module/User/src/",
             "Feed\\": "module/Feed/src/",
+            "Event\\": "module/Event/src/",
             "Offre\\": "module/Offre/src/"
         }
     },
@@ -43,6 +44,7 @@
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/",
             "UserTest\\": "module/User/test/",
+            "EventTest\\": "module/Event/test/",
             "FeedTest\\": "module/Feed/test/",
             "OffreTest\\": "module/Offre/test/"
         }

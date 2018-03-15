@@ -1,5 +1,6 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', true);
 use Zend\Mvc\Application;
 use Zend\Stdlib\ArrayUtils;
 

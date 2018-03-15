@@ -36,6 +36,7 @@ return [
     'Zend\I18n',
     'User',
     'Feed',
+    'Event',
     'Offre',
     'Application',
     

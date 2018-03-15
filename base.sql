@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.5
+-- https://www.phpmyadmin.net/
 --
--- Client :  127.0.0.1
--- Généré le :  Dim 11 Juin 2017 à 22:40
--- Version du serveur :  5.7.11
--- Version de PHP :  5.6.19
+-- Host: localhost
+-- Generation Time: Mar 15, 2018 at 05:19 PM
+-- Server version: 10.2.10-MariaDB
+-- PHP Version: 7.1.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,13 +19,51 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `artisandb`
+-- Database: `artisandb`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `feedback`
+-- Table structure for table `event`
+--
+
+CREATE TABLE `event` (
+  `id` int(11) NOT NULL,
+  `organizer` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `organizer_contact` int(11) NOT NULL,
+  `status` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `eventName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `startDate` date NOT NULL,
+  `endDate` date NOT NULL,
+  `facebook` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `twitter` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `twitterHashTag` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `instagram` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `country` int(11) NOT NULL,
+  `city` int(11) NOT NULL,
+  `address` text COLLATE utf8_unicode_ci NOT NULL,
+  `picture` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created` datetime NOT NULL,
+  `last_updated` datetime NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `updated_by` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `event`
+--
+
+INSERT INTO `event` (`id`, `organizer`, `organizer_contact`, `status`, `eventName`, `description`, `startDate`, `endDate`, `facebook`, `twitter`, `twitterHashTag`, `instagram`, `country`, `city`, `address`, `picture`, `created`, `last_updated`, `created_by`, `updated_by`) VALUES
+(1, 'Linedata', 1, 'scheduled', 'New event', 'A new event', '2000-03-03', '2001-03-03', 'Facebook test', 'Twitter Test', 'Twitter hashtag', 'my instagram', 1, 1, 'Linedata Adresss', NULL, '2018-03-15 12:07:42', '2018-03-15 14:44:25', 1, 1),
+(6, 'Linedata 2', 1, 'active', 'New event 2', 'sdfgsdfg', '2000-03-03', '2001-03-03', '', '', '', '', 1, 1, 'dfgsdfg dsfgdsfg', 'Screen Shot 2018-02-27 at 3.33.48 PM.png', '2018-03-15 15:32:41', '2018-03-15 15:32:41', 1, NULL),
+(7, 'Linedata 2', 2, 'active', 'New event 2', 'xdqsdf', '2000-03-03', '2001-03-03', '', '', '', '', 1, 1, 'Linedata 260 Franklin Street, Suite 1300', 'Picture2.png', '2018-03-15 15:33:16', '2018-03-15 15:33:16', 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback`
 --
 
 CREATE TABLE `feedback` (
@@ -31,12 +71,12 @@ CREATE TABLE `feedback` (
   `user_id` int(11) NOT NULL,
   `text` longtext COLLATE utf8_unicode_ci NOT NULL,
   `rate` int(11) NOT NULL,
-  `highlight` tinyint(1) NOT NULL DEFAULT '0',
+  `highlight` tinyint(1) NOT NULL DEFAULT 0,
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 --
--- Contenu de la table `feedback`
+-- Dumping data for table `feedback`
 --
 
 INSERT INTO `feedback` (`id`, `user_id`, `text`, `rate`, `highlight`, `date`) VALUES
@@ -45,7 +85,7 @@ INSERT INTO `feedback` (`id`, `user_id`, `text`, `rate`, `highlight`, `date`) VA
 -- --------------------------------------------------------
 
 --
--- Structure de la table `post`
+-- Table structure for table `post`
 --
 
 CREATE TABLE `post` (
@@ -60,7 +100,7 @@ CREATE TABLE `post` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `post`
+-- Dumping data for table `post`
 --
 
 INSERT INTO `post` (`id`, `author_id`, `status`, `title`, `content`, `excerpt`, `post_date`, `updated`) VALUES
@@ -69,20 +109,20 @@ INSERT INTO `post` (`id`, `author_id`, `status`, `title`, `content`, `excerpt`, 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `prestation`
+-- Table structure for table `prestation`
 --
 
 CREATE TABLE `prestation` (
   `id` int(11) NOT NULL,
   `intitule` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `intitule_devis` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8_unicode_ci
+  `description` longtext COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `roles`
+-- Table structure for table `roles`
 --
 
 CREATE TABLE `roles` (
@@ -91,18 +131,18 @@ CREATE TABLE `roles` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `roles`
+-- Dumping data for table `roles`
 --
 
 INSERT INTO `roles` (`id`, `name`) VALUES
-(1, 'Client'),
-(2, 'Artisant'),
+(1, 'Attendee'),
+(2, 'Speaker'),
 (3, 'Admin');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE `user` (
@@ -111,6 +151,7 @@ CREATE TABLE `user` (
   `firstname` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `lastname` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `last_login` datetime DEFAULT NULL,
@@ -126,48 +167,54 @@ CREATE TABLE `user` (
   `facebook_id` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `linkedin_id` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `avatar_path` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `role` smallint(2) NOT NULL DEFAULT '1'
+  `role` smallint(2) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 --
--- Contenu de la table `user`
+-- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `firstname`, `lastname`, `email`, `enabled`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `ip`, `subscription_date`, `facebook_id`, `linkedin_id`, `avatar_path`, `role`) VALUES
-(1, 'haithemtrabelsi', 'Haithem', 'Trabelsi', 'trabelsi.haithem@gmail.com', 1, '123456789', '2017-06-11 15:51:42', 0, 0, NULL, NULL, NULL, 0, NULL, '127.0.0.1', '15:51:42', NULL, NULL, NULL, 3),
-(2, 'zoku', 'haithem', 'trabelsi', 'lezoku@gmail.com', 1, '$2y$10$7i3shauefOH5BftqF/DLOedE.Do.sXbQ4nCZUa3..OjTOjtHc90Bq', '2017-06-11 15:51:55', 0, 0, NULL, NULL, NULL, 0, NULL, '127.0.0.1', '15:51:55', NULL, NULL, NULL, 1);
+INSERT INTO `user` (`id`, `username`, `firstname`, `lastname`, `email`, `description`, `enabled`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `credentials_expired`, `credentials_expire_at`, `ip`, `subscription_date`, `facebook_id`, `linkedin_id`, `avatar_path`, `role`) VALUES
+(1, 'haithemtrabelsi', 'Haithem', 'Trabelsi', 'trabelsi.haithem@gmail.com', 'test update', 1, '123456789', '2018-03-14 17:08:14', 0, 0, NULL, NULL, NULL, 0, NULL, '127.0.0.1', '17:08:14', NULL, NULL, NULL, 3),
+(2, 'zoku', 'haithem', 'trabelsi', 'lezoku@gmail.com', '', 1, '$2y$10$7i3shauefOH5BftqF/DLOedE.Do.sXbQ4nCZUa3..OjTOjtHc90Bq', '2017-06-11 15:51:55', 0, 0, NULL, NULL, NULL, 0, NULL, '127.0.0.1', '15:51:55', NULL, NULL, NULL, 1);
 
 --
--- Index pour les tables exportées
+-- Indexes for dumped tables
 --
 
 --
--- Index pour la table `feedback`
+-- Indexes for table `event`
+--
+ALTER TABLE `event`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `feedback`
 --
 ALTER TABLE `feedback`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `UNIQ_A6F2E1E5A76ED395` (`user_id`);
 
 --
--- Index pour la table `post`
+-- Indexes for table `post`
 --
 ALTER TABLE `post`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `prestation`
+-- Indexes for table `prestation`
 --
 ALTER TABLE `prestation`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `roles`
+-- Indexes for table `roles`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `user`
+-- Indexes for table `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
@@ -176,49 +223,55 @@ ALTER TABLE `user`
   ADD KEY `roles` (`role`) USING BTREE;
 
 --
--- AUTO_INCREMENT pour les tables exportées
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pour la table `feedback`
+-- AUTO_INCREMENT for table `event`
+--
+ALTER TABLE `event`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
--- AUTO_INCREMENT pour la table `post`
+-- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
   MODIFY `id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- AUTO_INCREMENT pour la table `prestation`
+-- AUTO_INCREMENT for table `prestation`
 --
 ALTER TABLE `prestation`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+
 --
--- AUTO_INCREMENT pour la table `roles`
+-- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
--- AUTO_INCREMENT pour la table `user`
+-- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
--- Contraintes pour les tables exportées
+-- Constraints for dumped tables
 --
 
 --
--- Contraintes pour la table `feedback`
+-- Constraints for table `feedback`
 --
 ALTER TABLE `feedback`
   ADD CONSTRAINT `FK_A6F2E1E5A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-
---
--- Contraintes pour la table `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `FK_Role` FOREIGN KEY (`role`) REFERENCES `roles` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

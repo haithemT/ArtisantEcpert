@@ -73,14 +73,16 @@ return [
     'controllers' => [
         'factories' => [
             Controller\LoginController::class => Controller\Factory\LoginControllerFactory::class,
-            Controller\IndexController::class => InvokableFactory::class
+            Controller\IndexController::class => InvokableFactory::class,
+            Controller\ImageManagerController::class => Controller\Factory\ImageManagerControllerFactory::class,
         ],
     ],
-     'service_manager' => [
+    'service_manager' => [
         'factories' => [
             Service\MailSender::class => InvokableFactory::class,
             AuthenticationService::class => AuthenticationServiceFactory::class,
             User\Service\UserService::class => AuthenticationServiceFactory::class,
+            Service\ImageService::class => InvokableFactory::class,
         ],
     ],
     'controller_plugins' => [
