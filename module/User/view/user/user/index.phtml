@@ -49,7 +49,7 @@ $this->headTitle($title);
                 <tbody>
                     <?php foreach ($users as $user) : ?>
                         <tr>
-                            <td><img class="img-avatar32" src="/images/avatar/<?= $this->escapeHtml($user->avatar_path) ?>"</td>
+                            <td><img class="img-avatar32" src="<?= $this->url('images', ['action'=>'file'], ['query'=>['name'=> $user->avatar, 'thumbnail'=>true]]); ?>" /></td>
                             <td><?= $this->escapeHtml($user->id) ?></td>
                             <td><?= $this->escapeHtml($user->username) ?></td>
                             <td><?= $this->escapeHtml($user->firstname) ?></td>

@@ -92,7 +92,8 @@ class UserForm extends Form
             'name' => 'avatar',
             'type' => 'file',
             'attributes' => [
-                'class' => 'form-control'
+                'class' => 'form-control',
+                'id'    => 'avatar'
             ],
             'options' => [
                 'label' => 'Avatar',
@@ -156,7 +157,8 @@ class UserForm extends Form
                 ]
             ],
             'attributes' => [
-                'class'=> 'form-control'
+                'class'=> 'form-control',
+                'value'  => '2',
             ]
         ]);
         
@@ -183,11 +185,12 @@ class UserForm extends Form
                 ]
             ],
             'attributes' => [
-                'class'=> 'form-control'
+                'class'=> 'form-control',
+                'value'  => '0',
             ]
         ]);
         
-         $this->add([
+        $this->add([
             'name' => 'enabled',
             'type' => 'radio',
             'options' => [
@@ -210,7 +213,8 @@ class UserForm extends Form
                 ]
             ],
             'attributes' => [
-                'class'=> 'form-control'
+                'class'=> 'form-control',
+                'value'  => '1',
             ]
         ]);
     }

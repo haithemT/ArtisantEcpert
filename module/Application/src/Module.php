@@ -30,6 +30,7 @@ class Module
         // The following line instantiates the SessionManager and automatically
         // makes the SessionManager the 'default' one.
         $sessionManager = $serviceManager->get(SessionManager::class);
+        $this->forgetInvalidSession($sessionManager);
         $eventManager->attach('dispatch', [$this, 'setLayout']);
         $eventManager->attach('dispatch', [$this, 'checkLogin']);
     }
@@ -126,5 +127,19 @@ class Module
                 $headLink->prependStylesheet(array('href' => $basePath . $value, 'rel' => 'stylesheet', 'media' => 'all'));
             }
         }
+    }
+
+    protected function forgetInvalidSession($sessionManager) {
+        try {
+            $sessionManager->start();
+            return;
+        } catch (\Exception $e) {
+        }
+        /**
+         * Session validation failed: toast it and carry on.
+         */
+        // @codeCoverageIgnoreStart
+        session_unset();
+        // @codeCoverageIgnoreEnd
     }
 }

@@ -82,17 +82,20 @@ class EventTable
             'city'                  => $event->city,
             'address'               => $event->address,
             'last_updated'          => new Expression('NOW()'),
-            'picture'               => $event->picture,
             'updated_by'            => $event->updated_by,
-            'created_by'            => $event->created_by,
         ];
         $id = (int) $event->id;
 
         if ($id === 0) {
             $data['created'] = new Expression('NOW()');
+            $data['created_by'] = $event->created_by;
             $this->tableGateway->insert($data);
             return 1;
         }
+        if($event->picture){
+            $data['picture'] = $event->picture;
+        }
+
         if (! $this->getEvent($id)) {
             throw new RuntimeException(sprintf('Cannot update post with identifier %d; does not exist',$id));
         }

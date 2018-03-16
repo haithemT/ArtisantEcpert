@@ -3,7 +3,6 @@ namespace Event\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use Application\Service\ImageService;
 use Event\Controller\EventController;
 use Event\Model\EventTable;
 /**
@@ -14,9 +13,8 @@ class EventControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $imageService = $container->get(ImageService::class);
         $eventTable = $container->get(EventTable::class);
         // Instantiate the controller and inject dependencies
-        return new EventController($eventTable,$imageService);
+        return new EventController($eventTable);
     }
 }

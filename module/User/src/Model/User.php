@@ -32,14 +32,14 @@ class User implements InputFilterAwareInterface
     public $subscription_date;
     public $facebook_id;
     public $linkedin_id;
-    public $avatar_path;
+    public $avatar;
     
     private $inputFilter;
     
 
     public function exchangeArray($data)
     {
-        $this->id 					= (isset($data['id'])) ? $data['id'] : null;
+        $this->id 					    = (isset($data['id'])) ? $data['id'] : null;
         $this->username 				= (isset($data['username'])) ? $data['username'] : null;
         $this->lastname 				= (isset($data['lastname'])) ? $data['lastname'] : null;
         $this->firstname 				= (isset($data['firstname'])) ? $data['firstname'] : null;
@@ -51,17 +51,17 @@ class User implements InputFilterAwareInterface
         $this->locked 					= (isset($data['locked'])) ? $data['locked'] : null;      
         $this->expired 					= (isset($data['expired'])) ? $data['expired'] : null;      
         $this->expires_at 				= (isset($data['expires_at'])) ? $data['expires_at'] : null;      
-        $this->confirmation_token                       = (isset($data['confirmation_token'])) ? $data['confirmation_token'] : null;
-        $this->password_requested_at                    = (isset($data['password_requested_at'])) ? $data['password_requested_at'] : null;
-        $this->role                                     = (isset($data['role'])) ? $data['role'] : null;
-        $this->role_name                                = (isset($data['role_name'])) ? $data['role_name'] : null;
-        $this->credentials_expired                      = (isset($data['credentials_expired'])) ? $data['credentials_expired'] : null; 
-        $this->credentials_expire_at                    = (isset($data['credentials_expire_at'])) ? $data['credentials_expire_at'] : null; 
-        $this->ip 					= (isset($data['ip'])) ? $data['ip'] : null; 
-        $this->subscription_date                        = (isset($data['subscription_date'])) ? $data['subscription_date'] : null; 
+        $this->confirmation_token       = (isset($data['confirmation_token'])) ? $data['confirmation_token'] : null;
+        $this->password_requested_at    = (isset($data['password_requested_at'])) ? $data['password_requested_at'] : null;
+        $this->role                     = (isset($data['role'])) ? $data['role'] : null;
+        $this->role_name                = (isset($data['role_name'])) ? $data['role_name'] : null;
+        $this->credentials_expired      = (isset($data['credentials_expired'])) ? $data['credentials_expired'] : null; 
+        $this->credentials_expire_at    = (isset($data['credentials_expire_at'])) ? $data['credentials_expire_at'] : null; 
+        $this->ip 					    = (isset($data['ip'])) ? $data['ip'] : null; 
+        $this->subscription_date        = (isset($data['subscription_date'])) ? $data['subscription_date'] : null; 
         $this->facebook_id				= (isset($data['facebook_id'])) ? $data['facebook_id'] : null;
         $this->linkedin_id				= (isset($data['linkedin_id'])) ? $data['linkedin_id'] : null;
-        $this->avatar_path				= (isset($data['avatar_path'])) ? $data['avatar_path'] : null;
+        $this->avatar				    = (isset($data['avatar'])) ? is_array($data['avatar']) && !empty($data['avatar']) ? $data['avatar']['name'] : $data['avatar']  : null;
     }   
     
     public function getArrayCopy()
@@ -88,7 +88,7 @@ class User implements InputFilterAwareInterface
             'subscription_date'     =>$this->subscription_date,
             'facebook_id'           =>$this->facebook_id,
             'linkedin_id'           =>$this->linkedin_id,
-            'avatar_path'           =>$this->avatar_path,
+            'avatar'                =>$this->avatar,
             'description'           =>$this->description,
         ];
     }
@@ -172,6 +172,44 @@ class User implements InputFilterAwareInterface
                 ],
             ],
         ]);
+
+        // Add validation rules for the "file" field.	 
+        $inputFilter->add([
+            'type'     => 'Zend\InputFilter\FileInput',
+            'name'     => 'avatar',
+            'required' => true,   
+            'validators' => [
+                ['name'    => 'FileUploadFile'],
+                [
+                    'name'    => 'FileMimeType',                        
+                    'options' => [                            
+                        'mimeType'  => ['image/jpeg', 'image/png']
+                    ]
+                ],
+                ['name'    => 'FileIsImage'],
+                [
+                    'name'    => 'FileImageSize',
+                    'options' => [
+                        'minWidth'  => 64,
+                        'minHeight' => 64,
+                        'maxWidth'  => 1024,
+                        'maxHeight' => 1024
+                    ]
+                ],
+            ],
+            'filters'  => [                    
+                [
+                    'name' => 'FileRenameUpload',
+                    'options' => [  
+                        'target' => './data/upload',
+                        'useUploadName' => true,
+                        'useUploadExtension' => true,
+                        'overwrite' => true,
+                        'randomize' => false
+                    ]
+                ]
+            ],   
+        ]); 
 
         $this->inputFilter = $inputFilter;
         return $this->inputFilter;

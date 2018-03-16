@@ -68,6 +68,16 @@ return [
                     ],
                 ],
             ],
+            'images' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/images',
+                    'defaults' => [
+                        'controller' => Controller\ImageManagerController::class,
+                        'action'     => 'file',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [

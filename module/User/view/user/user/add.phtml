@@ -1,13 +1,12 @@
 <?php
-$title = $this->translate('Add new user');
+$title = $this->translate('Add user');
 $this->headTitle($title);
-?>
-<?php
 $form->setAttribute('action', $this->url('user', ['action' => 'add']));
+$form->get('submit')->setValue($this->translate('Save changes'));
+$form->get('id')->setValue(0);
 
-$form->get('submit')->setValue($this->translate('Add user'));
+$form->prepare();
 ?>
-
 
 <div class="content bg-gray-lighter">
     <div class="row items-push">
@@ -19,7 +18,7 @@ $form->get('submit')->setValue($this->translate('Add user'));
         <div class="col-sm-5 text-right hidden-xs">
             <ol class="breadcrumb push-10-t">
                 <li><a class="link-effect" href="<?php echo $this->url('user'); ?>"><?php echo $this->translate('Users list');?></a></li>
-                <li>Add</li>
+                <li><?php echo $this->translate('Add user');?></li>
             </ol>
         </div>
     </div>
@@ -169,12 +168,46 @@ $form->get('submit')->setValue($this->translate('Add user'));
                     </div>                    
                 </div>
             </div>
+            <div class="block">
+                <div class="block-header">
+                    <h3 class="block-title"><?php echo $this->translate('Admin tasks');?></h3>
+                    <!--<ul class="block-options">
+                        <li>
+                            <button type="button"><i class="si si-settings"></i></button>
+                        </li>
+                    </ul>-->
+                </div>
+                <div class="block-content block-content-narrow">
+                    <div class="form-group  <?php echo !empty($form->get('enabled')->getMessages())?'has-error':'';?>">
+                        <div class="col-sm-12">
+                            <label class="col-md-5" style="padding-top: 4px;"><?php echo $this->translate('Enable account');?></label>
+                            <div class="col-md-7">
+                                <?php echo $this->formElement($form->get('enabled')); ?>
+                            </div>
+                            <div class="help-block text-right animated fadeInDown form-error">
+                                <?php echo $this->formElementErrors($form->get('enabled'));?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group  <?php echo !empty($form->get('locked')->getMessages())?'has-error':'';?>">
+                        <div class="col-sm-12">
+                            <label class="col-md-5" style="padding-top: 4px;"><?php echo $this->translate('Lock account');?></label>
+                            <div class="col-md-7">
+                                <?php echo $this->formElement($form->get('locked')); ?>
+                            </div>
+                            <div class="help-block text-right animated fadeInDown form-error">
+                                <?php echo $this->formElementErrors($form->get('locked'));?>
+                            </div>
+                        </div>
+                    </div>         
+                </div>
+            </div>
         </div>
     </div>
     <div class="block">
         <div class="block-content block-content-narrow">
             <div class="form-group text-center">
-                <a href="/user" class="btn btn-default"><?php echo $this->translate('Back');?></a>
+                <a href="<?=$this->url('user'); ?>" class="btn btn-default"><?php echo $this->translate('Back');?></a>
                 <?php echo $this->formSubmit($form->get('submit'));?>
             </div>
         </div>

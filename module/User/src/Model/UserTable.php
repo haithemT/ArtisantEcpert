@@ -31,7 +31,7 @@ class UserTable
     public $subscription_date;
     public $facebook_id;
     public $linkedin_id;
-    public $avatar_path;
+    public $avatar;
     public $description;
     
     public function __construct(TableGatewayInterface $tableGateway)
@@ -87,14 +87,16 @@ class UserTable
             'subscription_date'     => new Expression('NOW()'),
             'facebook_id'           => $user->facebook_id,
             'linkedin_id'           => $user->linkedin_id,
-            'avatar_path'           => $user->avatar_path,
             'description'           => $user->description,
             //'roles'                 => (!isset($user->roles) || $user->roles==null) ? 'user':$user->roles,
         ];
+        if($user->avatar){
+            $data['avatar'] = $user->avatar;
+        }
         $id = (int) $user->id;
 
         if ($id === 0) {
-        $data['password'] = $user->password;
+            $data['password'] = $user->password;
             $this->tableGateway->insert($data);
             return 1;
         }

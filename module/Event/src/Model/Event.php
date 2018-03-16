@@ -160,7 +160,7 @@ class Event implements InputFilterAwareInterface
         $inputFilter->add([
             'type'     => 'Zend\InputFilter\FileInput',
             'name'     => 'picture',
-            'required' => false,   
+            'required' => true,   
             'validators' => [
                 ['name'    => 'FileUploadFile'],
                 [

@@ -51,8 +51,8 @@ $form->prepare();
                             </div>
                         </div>
                     </div>
-                    <div class="form-group  <?php echo !empty($form->get('organizer')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-12">
+                    <div class="form-group  <?php echo !empty($form->get('organizer')->getMessages())?'has-error':'';?> <?php echo !empty($form->get('organizer_contact')->getMessages())?'has-error':'';?>">
+                        <div class="col-md-6">
                             <div class="form-material">
                                 <label><?php echo $this->translate('Organizer');?></label>
                                 <?php echo $this->formElement($form->get('organizer')); ?>
@@ -61,6 +61,15 @@ $form->prepare();
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-material">
+                                <label><?php echo $this->translate('Organizer contact');?></label>
+                                <?php echo $this->formElement($form->get('organizer_contact')); ?>
+                                <div class="help-block text-right animated fadeInDown form-error">
+                                    <?php echo $this->formElementErrors($form->get('organizer_contact'));?>
+                                </div>
+                            </div>
+                        </div>             
                     </div>
                     <div class="form-group  <?php echo !empty($form->get('description')->getMessages())?'has-error':'';?>">
                         <div class="col-sm-12">
@@ -127,7 +136,7 @@ $form->prepare();
                     <div class="form-group  <?php echo !empty($form->get('picture')->getMessages())?'has-error':'';?>">
                         <div class="col-sm-12">
                             <div class="form-material">
-                                <label><?php echo $this->translate('Image/Video');?></label>
+                                <label><?php echo $this->translate('Image/Logo');?></label>
                                 <?php echo $this->formElement($form->get('picture')); ?>
                                 <div class="help-block text-right animated fadeInDown form-error">
                                     <?php echo $this->formElementErrors($form->get('picture'));?>
@@ -139,29 +148,6 @@ $form->prepare();
             </div>
         </div>
         <div class="col-md-3">
-            <div class="block">
-                <div class="block-header">
-                    <h3 class="block-title"><?php echo $this->translate('Organizer contact');?></h3>
-                    <!--<<ul class="block-options">
-                        <li>
-                            <a type="button" ><i class="si si-users"></i> Add user</a>
-                        </li>
-                    </ul>-->
-                </div>
-                <div class="block-content block-content-narrow">
-                    <div class="form-group <?php echo !empty($form->get('organizer_contact')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-12">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Name');?></label>
-                                <?php echo $this->formElement($form->get('organizer_contact')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('organizer_contact'));?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                 
-                </div>
-            </div>
             <div class="block">
                 <div class="block-header">
                     <h3 class="block-title"><?php echo $this->translate('Social network');?></h3>

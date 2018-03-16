@@ -35,23 +35,25 @@ class UserController extends AbstractActionController
     public function addAction()
     {
         $form = new UserForm();
-        $form->get('submit')->setValue('Add');
-
         $request = $this->getRequest();
 
-        if (! $request->isPost()) {
+        if ($request->isPost()) {
+            $data = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+        } else {
             return ['form' => $form];
         }
-
         $user = new User();
-        $form->setInputFilter($user->getInputFilter());
-        $form->setData($request->getPost());
 
+        $form->setInputFilter($user->getInputFilter());
+        $form->setData($data);
         if (! $form->isValid()) {
             return ['form' => $form];
         }   
         $user->exchangeArray($form->getData());
-        /**
+           /**
          * 
          * SET CONNECTED USER IP
          * @todo get the real connected user ip not the proxied ip
@@ -59,7 +61,8 @@ class UserController extends AbstractActionController
         $user->ip=$request->getServer('REMOTE_ADDR');
         $user->confirmation_token=md5(uniqid(mt_rand(), true));
         $user->password=UserCredentialsService::encryptPassword($user->password);
-        
+
+        $user->created_by=$this->identity()['id'];     
         $this->table->saveUser($user);
         return $this->redirect()->toRoute('user');
     }
@@ -84,16 +87,28 @@ class UserController extends AbstractActionController
         $form = new UserForm();
         $form->bind($user);
         $form->get('submit')->setAttribute('value', 'Edit');
+        $imageFilter = $form->getInputFilter()->get('avatar');
+        $imageFilter->setRequired(false);
 
         $request = $this->getRequest();
         $viewData = ['user' => $user, 'form' => $form];
 
-        if (! $request->isPost()) {
+        if ($request->isPost()) {
+            if($request->getFiles()){
+                $data = array_merge_recursive(
+                    $request->getPost()->toArray(),
+                    $request->getFiles()->toArray()
+                );
+            } else {
+                $data = $request->getPost();
+            }
+        } else {
             return $viewData;
         }
 
+
         $form->setInputFilter($user->getInputFilter());
-        $form->setData($request->getPost());
+        $form->setData($data);
 
         if (! $form->isValid()) {
             return $viewData;
