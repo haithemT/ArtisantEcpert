@@ -10,17 +10,15 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Validator\StringLength;
 
-class Post implements InputFilterAwareInterface
+class Comment implements InputFilterAwareInterface
 {
     public $id;
     public $author_id;
-    public $author;
-    public $status;
-    public $title;
-    public $content;
-    public $excerpt;
-    public $comments;
-    public $post_date;
+    public $post_id;
+    public $comment;
+    public $ip;
+    public $approved;
+    public $created;
     public $updated;
     
     private $inputFilter;
@@ -30,15 +28,13 @@ class Post implements InputFilterAwareInterface
     {
         $this->id 		    = (isset($data['id'])) ? $data['id'] : null;
         $this->author_id 	= (isset($data['author_id'])) ? $data['author_id'] : null;
-        $this->status       = (isset($data['status'])) ? $data['status'] : null;
-        $this->title        = (isset($data['title'])) ? $data['title'] : null;
-        $this->content 		= (isset($data['content'])) ? $data['content'] : null;
-        $this->excerpt      = (isset($data['excerpt'])) ? $data['excerpt'] : null;
-        $this->post_date    = (isset($data['post_date'])) ? $data['post_date'] : null;      
-        $this->updated      = (isset($data['updated'])) ? $data['updated'] : null;
-        $this->picture      = (isset($data['picture'])) ? $data['picture'] : null;
-        $this->comments     = (isset($data['commentsCount'])) ? $data['commentsCount'] : 0;
         $this->author       = (isset($data['firstname']) && isset($data['lastname'])) ? $data['firstname'].' '.$data['lastname'] : null;
+        $this->post_id      = (isset($data['post_id'])) ? $data['post_id'] : null;
+        $this->comment      = (isset($data['comment'])) ? $data['comment'] : null;
+        $this->ip 		    = (isset($data['ip'])) ? $data['ip'] : null;   
+        $this->approved     = (isset($data['approved'])) ? $data['approved'] : null;
+        $this->created      = (isset($data['created'])) ? $data['created'] : null;
+        $this->updated      = (isset($data['updated'])) ? $data['updated'] : null;
     }   
     
     public function getArrayCopy()
@@ -46,15 +42,14 @@ class Post implements InputFilterAwareInterface
         return [
             'id'         => $this->id,
             'author_id'  => $this->author_id,
-            'status'     => $this->status,
-            'title'      => $this->title,
-            'content'    => $this->content,
-            'excerpt'    => $this->excerpt, 
-            'comments'   => $this->comments,
-            'post_date'  => $this->post_date,
-            'updated'    => $this->updated,
             'author'     => $this->author,
-            'picture'    => $this->picture
+            'post_id'    => $this->post_id,
+            'comment'    => $this->comment,
+            'ip'         => $this->ip,
+            'approved'   => $this->approved,
+            'updated'    => $this->updated,
+            'created'    => $this->created,
+            'updated'    => $this->updated
         ];
     }
     
@@ -83,7 +78,7 @@ class Post implements InputFilterAwareInterface
         ]);
 
         $inputFilter->add([
-            'name' => 'title',
+            'name' => 'comment',
             'required' => true,
             'filters' => [
                 ['name' => StripTags::class],
@@ -101,23 +96,6 @@ class Post implements InputFilterAwareInterface
             ],
         ]);
 
-        $inputFilter->add([
-            'name' => 'content',
-            'required' => true,
-            'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
-            ],
-        ]);
-        
-        $inputFilter->add([
-            'name' => 'excerpt',
-            'required' => true,
-            'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
-            ],
-        ]);
         $this->inputFilter = $inputFilter;
         return $this->inputFilter;
     }

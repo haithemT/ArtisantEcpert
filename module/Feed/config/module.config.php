@@ -28,6 +28,20 @@ return [
                     ],
                 ],
             ],
+            'comment' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route' => '/comment[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\CommentController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'view_manager' => [

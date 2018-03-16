@@ -1,5 +1,5 @@
 <?php
-$title = $this->translate('Posts list');
+$title = $this->translate('Comments list');
 $this->headTitle($title);
 ?>
 <!-- Page Header -->
@@ -11,7 +11,7 @@ $this->headTitle($title);
             </h1>
         </div>
         <div class="col-sm-5 text-right hidden-xs">
-            <a href="<?= $this->url('feed', ['action' => 'add']) ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo $this->translate('Add new post');?></a>
+            <a href="<?= $this->url('comment', ['action' => 'add']) ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo $this->translate('Add new comment');?></a>
         </div>
         <!--<div class="col-sm-5 text-right hidden-xs">
             <ol class="breadcrumb push-10-t">
@@ -32,10 +32,9 @@ $this->headTitle($title);
                 <thead>
                     <tr>
                         <th><?php echo $this->translate('ID');?></th>
-                        <th><?php echo $this->translate('Title');?></th>
+                        <th><?php echo $this->translate('Comment');?></th>
                         <th><?php echo $this->translate('Author');?></th>
                         <th><?php echo $this->translate('Status');?></th>
-                        <th><?php echo $this->translate('Comments');?></th>
                         <th><?php echo $this->translate('Created');?></th>
                         <th><?php echo $this->translate('Last updated');?></th>
                         <th class="text-center" style="width: 10%;"><?php echo $this->translate('Actions');?></th>
@@ -43,20 +42,20 @@ $this->headTitle($title);
                 </thead>
                 <tbody>
                     <?php
-                    if(count($posts)>0):
-                        foreach ($posts as $post) : ?>
+                    if(count($comments)>0):
+                        foreach ($comments as $comment) : ?>
                             <tr>
-                                <td><?= $this->escapeHtml($post->id) ?></td>
-                                <td><?= $this->escapeHtml($post->title) ?></td>
-                                <td><?= $this->escapeHtml($post->author) ?></td>
+                                <td><?= $this->escapeHtml($comment->id) ?></td>
+                                <td><?= $this->escapeHtml($comment->comment) ?></td>
+                                <td><?= $this->escapeHtml($comment->author) ?></td>
                                 <td>
                                     <?php
-                                        switch($this->escapeHtml($post->status)){
-                                            case 'publish':
-                                                echo '<span class="label label-success">'.$this->translate('Publish').'</span>';
+                                        switch($this->escapeHtml($comment->approved)){
+                                            case '1':
+                                                echo '<span class="label label-success">'.$this->translate('Approved').'</span>';
                                             break;
-                                            case 'draft':
-                                                echo '<span class="label label-warning">'.$this->translate('Draft').'</span>'; 
+                                            case '0':
+                                                echo '<span class="label label-danger">'.$this->translate('Not approved').'</span>'; 
                                             break;
                                             case 'pending':
                                                 echo '<span class="label label-info">'.$this->translate('Pending').'</span>';
@@ -64,20 +63,19 @@ $this->headTitle($title);
                                         }
                                     ?>
                                 </td>
-                                <td><a href="<?= $this->url('comment', ['action' => 'index', 'id' => $post->id]) ?>"><?= $this->escapeHtml($post->comments) ?></a></td>
-                                <td><?= $this->escapeHtml($post->post_date) ?></td>
-                                <td><?= $this->escapeHtml($post->updated) ?></td>
+                                <td><?= $this->escapeHtml($comment->created) ?></td>
+                                <td><?= $this->escapeHtml($comment->updated) ?></td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="<?= $this->url('feed', ['action' => 'edit', 'id' => $post->id]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Edit post');?>"><i class="fa fa-pencil"></i></a>
-                                        <a href="<?= $this->url('feed', ['action' => 'delete', 'id' => $post->id]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Remove post');?>"><i class="fa fa-times"></i></a>
+                                        <a href="<?= $this->url('comment', ['action' => 'edit', 'id' => $comment->id]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Edit comment');?>"><i class="fa fa-pencil"></i></a>
+                                        <a href="<?= $this->url('comment', ['action' => 'delete', 'id' => $comment->id]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Remove comment');?>"><i class="fa fa-times"></i></a>
                                     </div>
                                 </td>
                             </tr>
                         <?php endforeach;
                             else:
                         ?>
-                            <tr><td colspan="7"><?php echo $this->translate('No posts found');?></td></tr>
+                            <tr><td colspan="7"><?php echo $this->translate('No Comments found');?></td></tr>
                         <?php endif;?>
                 </tbody>
             </table>
