@@ -129,4 +129,17 @@ class FeedController extends AbstractActionController
             'post' => $this->table->getPost($id),
         ];
     }
+
+    public function karmaAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('post');
+        }
+
+        return new ViewModel([
+            'karma' => $this->table->getPostKarmadetails($id),
+            'id' => $id
+        ]);
+    }
 }

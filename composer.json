@@ -37,6 +37,7 @@
             "User\\": "module/User/src/",
             "Feed\\": "module/Feed/src/",
             "Event\\": "module/Event/src/",
+            "Poll\\": "module/Poll/src/",
             "Offre\\": "module/Offre/src/"
         }
     },
@@ -46,6 +47,7 @@
             "UserTest\\": "module/User/test/",
             "EventTest\\": "module/Event/test/",
             "FeedTest\\": "module/Feed/test/",
+            "PollTest\\": "module/Poll/test/",
             "OffreTest\\": "module/Offre/test/"
         }
     },

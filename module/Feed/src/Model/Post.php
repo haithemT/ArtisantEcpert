@@ -20,6 +20,7 @@ class Post implements InputFilterAwareInterface
     public $content;
     public $excerpt;
     public $comments;
+    public $karma;
     public $post_date;
     public $updated;
     
@@ -38,6 +39,7 @@ class Post implements InputFilterAwareInterface
         $this->updated      = (isset($data['updated'])) ? $data['updated'] : null;
         $this->picture      = (isset($data['picture'])) ? $data['picture'] : null;
         $this->comments     = (isset($data['commentsCount'])) ? $data['commentsCount'] : 0;
+        $this->karma        = (isset($data['karmaCount'])) ? $data['karmaCount'] : 0;
         $this->author       = (isset($data['firstname']) && isset($data['lastname'])) ? $data['firstname'].' '.$data['lastname'] : null;
     }   
     
@@ -54,7 +56,8 @@ class Post implements InputFilterAwareInterface
             'post_date'  => $this->post_date,
             'updated'    => $this->updated,
             'author'     => $this->author,
-            'picture'    => $this->picture
+            'picture'    => $this->picture,
+            'karma'      => $this->karma,
         ];
     }
     

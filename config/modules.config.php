@@ -37,6 +37,7 @@ return [
     'User',
     'Feed',
     'Event',
+    'Poll',
     'Offre',
     'Application',
     

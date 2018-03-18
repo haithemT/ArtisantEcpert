@@ -1,0 +1,43 @@
+<?php
+
+$title = 'Delete poll';
+$url   = $this->url('poll', ['action' => 'delete', 'id' => $id]);
+
+$this->headTitle($title);
+?>
+<div class="content bg-gray-lighter">
+    <div class="row items-push">
+        <div class="col-sm-7">
+            <h1 class="page-heading">
+                <?= $this->escapeHtml($title) ?>
+            </h1>
+        </div>
+        <div class="col-sm-5 text-right hidden-xs">
+            <ol class="breadcrumb push-10-t">
+                <li><a class="link-effect" href="<?php echo $this->url('poll'); ?>"><?php echo $this->translate('Polls list');?></a></li>
+                <li><?= $this->escapeHtml($title) ?></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="content content-narrow">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="block">
+                <div class="block-content block-content-narrow text-center">
+                    <p>
+                        <?=$this->translate('Are you sure that you want to delete the poll');?>: <b>"<?= $this->escapeHtml($poll->question);?>"</b>?
+                    </p>
+                    <form class="form" action="<?= $url ?>" method="post">
+                        <div class="form-group">
+                            <input type="hidden" name="id" value="<?= (int) $poll->id ?>" />
+                            <input type="submit" class="btn btn-danger" name="del" value="Yes" />
+                            <input type="submit" class="btn btn-success" name="del" value="No" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

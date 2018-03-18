@@ -1,0 +1,83 @@
+<?php
+$title = $this->translate('Polls list');
+$this->headTitle($title);
+?>
+<!-- Page Header -->
+<div class="content bg-gray-lighter">
+    <div class="row items-push">
+        <div class="col-sm-7">
+            <h1 class="page-heading">
+                <?= $this->escapeHtml($title) ?>
+            </h1>
+        </div>
+        <div class="col-sm-5 text-right hidden-xs">
+            <a href="<?= $this->url('poll', ['action' => 'add']) ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo $this->translate('Add new event');?></a>
+        </div>
+        <!--<div class="col-sm-5 text-right hidden-xs">
+            <ol class="breadcrumb push-10-t">
+                <li>Tables</li>
+                <li><a class="link-effect" href="">DataTables</a></li>
+            </ol>
+        </div>-->
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="content">
+    <!-- Dynamic Table Full -->
+    <div class="block">
+        <div class="block-content">
+            <!-- DataTables init on table by adding .js-dataTable-full class, functionality initialized in js/pages/base_tables_datatables.js -->
+            <table class="table table-bordered table-striped js-dataTable-full">
+                <thead>
+                    <tr>
+                        <th><?php echo $this->translate('Question');?></th>
+                        <th><?php echo $this->translate('Status');?></th>
+                        <th><?php echo $this->translate('Author');?></th>
+                        <th><?php echo $this->translate('Created');?></th>
+                        <th><?php echo $this->translate('Last updated');?></th>
+                        <th class="text-center" style="width: 10%;"><?php echo $this->translate('Actions');?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if(count($polls)>0):
+                        foreach ($polls as $poll) : ?>
+                            <tr>
+                                <td><?= $this->escapeHtml($poll['question']) ?></td>
+                                <td>
+                                    <?php
+                                        switch($this->escapeHtml($poll['status'])){
+                                            case 'active':
+                                                echo '<span class="label label-success">'.$this->translate('Active').'</span>';
+                                            break;
+                                            case 'archived':
+                                                echo '<span class="label label-warning">'.$this->translate('Archived').'</span>'; 
+                                            break;
+                                            case 'scheduled':
+                                                echo '<span class="label label-info">'.$this->translate('Scheduled').'</span>';
+                                            break;
+                                        }
+                                    ?>
+                                </td>
+                                <td><?= $this->escapeHtml($poll['Author']) ?></td>
+                                <td><?= $this->escapeHtml($poll['created']) ?></td>
+                                <td><?= $this->escapeHtml($poll['last_updated']) ?></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="<?= $this->url('poll', ['action' => 'edit', 'id' => $poll['id']]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Edit poll');?>"><i class="fa fa-pencil"></i></a>
+                                        <a href="<?= $this->url('poll', ['action' => 'delete', 'id' => $poll['id']]) ?>" class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="<?php $this->translate('Remove poll');?>"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach;
+                            else:
+                        ?>
+                            <tr><td colspan="7"><?php echo $this->translate('No polls found');?></td></tr>
+                        <?php endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- END Page Header -->

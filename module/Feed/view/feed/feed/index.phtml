@@ -32,10 +32,11 @@ $this->headTitle($title);
                 <thead>
                     <tr>
                         <th><?php echo $this->translate('ID');?></th>
-                        <th><?php echo $this->translate('Title');?></th>
+                        <th><?php echo $this->translate('Post');?></th>
                         <th><?php echo $this->translate('Author');?></th>
                         <th><?php echo $this->translate('Status');?></th>
                         <th><?php echo $this->translate('Comments');?></th>
+                        <th><?php echo $this->translate('Likes');?></th>
                         <th><?php echo $this->translate('Created');?></th>
                         <th><?php echo $this->translate('Last updated');?></th>
                         <th class="text-center" style="width: 10%;"><?php echo $this->translate('Actions');?></th>
@@ -65,6 +66,7 @@ $this->headTitle($title);
                                     ?>
                                 </td>
                                 <td><a href="<?= $this->url('comment', ['action' => 'index', 'id' => $post->id]) ?>"><?= $this->escapeHtml($post->comments) ?></a></td>
+                                <td><a href="<?= $this->url('feed', ['action' => 'karma', 'id' => $post->id]) ?>"><?= $this->escapeHtml($post->karma) ?></a></td>
                                 <td><?= $this->escapeHtml($post->post_date) ?></td>
                                 <td><?= $this->escapeHtml($post->updated) ?></td>
                                 <td>

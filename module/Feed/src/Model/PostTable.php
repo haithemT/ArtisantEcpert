@@ -15,6 +15,8 @@ class PostTable
     public $title;
     public $content;
     public $excerpt;
+    public $comments;
+    public $karma;
     public $post_date;
     public $updated;
     public $picture;
@@ -31,6 +33,7 @@ class PostTable
         $select = new Select();
         $select->from('post');
         $select->join('comments', 'comments.post_id = post.id', array('commentsCount' => new \Zend\Db\Sql\Expression('COUNT(comments.post_id)')), 'left');
+        $select->join('karma', 'karma.post_id = post.id', array('karmaCount' => new \Zend\Db\Sql\Expression('COUNT(karma.post_id)')), 'left');
         $select->join('user', 'user.id = post.author_id', array('username', 'lastname', 'firstname'), 'left');
        // echo $this->tableGateway->getSql()->getSqlstringForSqlObject($select); die ;
         $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
@@ -87,6 +90,23 @@ class PostTable
     public function deletePost($id)
     {
         $this->tableGateway->delete(['id' => (int) $id]);
+    }
+
+    public function getPostKarmadetails($postid)
+    {
+        $rows=[];
+        $post =new Post();
+        $select = new Select();
+        $select->from('karma');
+        $select->join('user', 'karma.author_id = user.id', array('author' => new \Zend\Db\Sql\Expression('CONCAT(lastname," ",firstname)')), 'left');
+        $select->where->equalTo('post_id', $postid);
+       // echo $this->tableGateway->getSql()->getSqlstringForSqlObject($select); die ;
+        $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+        foreach ($resultSet as $row) {
+            $rows[] = $row;
+        }
+        return $rows;
     }
 
 }
