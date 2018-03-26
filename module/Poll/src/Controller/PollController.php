@@ -8,6 +8,7 @@
 namespace Poll\Controller;
 
 use Poll\Model\PollTable;
+use Event\Model\EventTable;
 use Poll\Form\PollForm;
 use Poll\Model\Poll;
 
@@ -17,10 +18,12 @@ use Zend\View\Model\ViewModel;
 class PollController extends AbstractActionController
 {
     private $table;
+    private $eventTable;
 
-    public function __construct(PollTable $table)
+    public function __construct(PollTable $table ,EventTable $eventTable)
     {
-        $this->table = $table;
+        $this->table        = $table;
+        $this->eventTable   = $eventTable;
     }
 
  	public function indexAction()
@@ -40,20 +43,26 @@ class PollController extends AbstractActionController
             'archived'      => $this->translator()->translate('Archived'),
             'scheduled'     => $this->translator()->translate('Scheduled')
         ];
+        $eventsList = $this->eventTable->fetchAll();
+        $eventsListOptions = array_map(function($e){
+            return array('value' => $e['id'], 'label' => $e['eventName']);
+        }, $eventsList);
+
         $form->get('status')->setAttribute('options',$pollStatusList);
+        $form->get('event')->setAttribute('options',$eventsListOptions);
         if (! $request->isPost()) {
             return ['form' => $form];
         }
         $poll = new Poll();
 
         $form->setInputFilter($poll->getInputFilter());
-        $form->setData($data);
+        $form->setData($request->getPost());
         if (! $form->isValid()) {
             return ['form' => $form];
         }   
         $poll->exchangeArray($form->getData());
    
-        $poll->created_by=$this->identity()['id'];     
+        $poll->created_by=$this->identity()['id']; 
         $this->table->savePoll($poll);
         return $this->redirect()->toRoute('poll');
     }
@@ -87,7 +96,7 @@ class PollController extends AbstractActionController
         }
 
         $form->setInputFilter($poll->getInputFilter());
-        $form->setData($data);
+        $form->setData($request->getPost());
 
         if (! $form->isValid()) {
             return $viewData;

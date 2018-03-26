@@ -5,6 +5,7 @@ use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Insert;
 class PollTable
 {
     private $tableGateway;
@@ -45,22 +46,41 @@ class PollTable
         $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
         $resultSet = $statement->execute();
         $poll->exchangeArray($resultSet->current());
-        return $event;
+        return $poll;
     }
 
     public function savePoll(Poll $poll)
     {
         $data = [
             'id'                    => $poll->id,
-            'question'              => $poll->organizer_contact,
+            'question'              => $poll->question,
             'status'                => $poll->status,
-            'last_updated'          => new Expression('NOW()'),
+            'event_id'              => $poll->event_id,
+            'created'               => new Expression('NOW()'),
+            'created_by'            => $poll->created_by,
         ];
+        try {
+            $connection = $this->dbAdapter->getDriver()->getConnection();
+            $connection->beginTransaction();
+            $insert = new Insert();
+            $insert->into('poll')->values($data);
+            $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($insert);
+            $insertedID = $statement->execute()->getGeneratedValue();
+            // iinsert into response table
+            
+            
+            $connection->commit();
+        } catch (\Exception $e) {
+            if ($connection instanceof \Zend\Db\Adapter\Driver\ConnectionInterface) {
+                $connection->rollback();
+            }
+            
+            /* Other error handling */
+        }
         $id = (int) $poll->id;
 
         if ($id === 0) {
-            $data['created'] = new Expression('NOW()');
-            $data['created_by'] = $poll->created_by;
+
             $this->tableGateway->insert($data);
             return 1;
         }

@@ -31,7 +31,7 @@ class PollForm extends Form
         ]);
         $this->add([
             'type' => Element\Collection::class,
-            'name' => 'response',
+            'name' => 'responses',
             'options' => [
                 'label' => 'Response',
                 'count' => 2,
@@ -69,6 +69,17 @@ class PollForm extends Form
                 'archived'      => 'Archived',
                 'scheduled'     => 'Scheduled'
             ]
+            ],
+        ]);
+        $this->add([
+            'name' => 'event',
+            'type' => 'select',
+            'attributes' => [
+                'class' => 'form-control'
+            ],
+            'options' => [
+                'label' =>'Events',
+                'value_options' =>[]
             ],
         ]);
        
