@@ -1,13 +1,11 @@
 <?php
-$title = $this->translate('Edit event');
+$title = $this->translate('Edit poll');
 $this->headTitle($title);
 ?>
 <?php
-$form->setAttribute('action', $this->url('event', [
-    'action' => 'edit',
-    'id'     => $id,
-]));
-$form->get('submit')->setValue($this->translate('Edit event'));
+$form->setAttribute('action', $this->url('poll', ['action' => 'edit','id' => $id,]));
+
+$form->get('submit')->setValue($this->translate('Edit poll'));
 $form->prepare();
 ?>
 
@@ -21,7 +19,7 @@ $form->prepare();
         </div>
         <div class="col-sm-5 text-right hidden-xs">
             <ol class="breadcrumb push-10-t">
-                <li><a class="link-effect" href="<?php echo $this->url('event'); ?>"><?php echo $this->translate('Events list');?></a></li>
+                <li><a class="link-effect" href="<?php echo $this->url('poll'); ?>"><?php echo $this->translate('Polls list');?></a></li>
                 <li><?= $this->escapeHtml($title) ?></li>
             </ol>
         </div>
@@ -42,211 +40,43 @@ $form->prepare();
                 </div>
                 <div class="block-content block-content-narrow">
                     <?php echo $this->formHidden($form->get('id'));?>
-
-                    <div class="form-group <?php echo !empty($form->get('eventName')->getMessages())?'has-error':'';?>">
+                    <div class="form-group <?php echo !empty($form->get('event')->getMessages())?'has-error':'';?>">
                         <div class="col-sm-12">
                             <div class="form-material">
-                                <label><?php echo $this->translate('Event Name');?></label>
-                                <?php echo $this->formElement($form->get('eventName')); ?>
+                                <label><?php echo $this->translate('Event');?></label>
+                                <?php echo $this->formElement($form->get('event')); ?>
                                 <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('eventName'));?>
+                                    <?php echo $this->formElementErrors($form->get('event'));?>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group  <?php echo !empty($form->get('organizer')->getMessages())?'has-error':'';?> <?php echo !empty($form->get('organizer_contact')->getMessages())?'has-error':'';?>">
-                        <div class="col-md-6">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Organizer');?></label>
-                                <?php echo $this->formElement($form->get('organizer')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('organizer'));?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Organizer contact');?></label>
-                                <?php echo $this->formElement($form->get('organizer_contact')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('organizer_contact'));?>
-                                </div>
-                            </div>
-                        </div>             
-                    </div>
-                    <div class="form-group  <?php echo !empty($form->get('description')->getMessages())?'has-error':'';?>">
+                    <div class="form-group <?php echo !empty($form->get('question')->getMessages())?'has-error':'';?>">
                         <div class="col-sm-12">
                             <div class="form-material">
-                                <label><?php echo $this->translate('Description');?></label>
-                                <?php echo $this->formElement($form->get('description')); ?>
+                                <label><?php echo $this->translate('Question');?></label>
+                                <?php echo $this->formElement($form->get('question')); ?>
                                 <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('description'));?>
+                                    <?php echo $this->formElementErrors($form->get('question'));?>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group  <?php echo !empty($form->get('startDate')->getMessages())?'has-error':'';?> <?php echo !empty($form->get('endDate')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-6">
+                    <div class="form-group <?php echo !empty($form->get('response')->getMessages())?'has-error':'';?>">
+                        <div class="col-sm-12">
                             <div class="form-material">
-                                <label><?php echo $this->translate('Start Date');?></label>
-                                <?php echo $this->formElement($form->get('startDate')); ?>
+                                <label><?php echo $this->translate('Responses');?> <button id="addPoll"><?php echo $this->translate('Add choice');?></button></label>
+                                <ol class="responses">
+                                    <?php foreach($response as $key =>$choice) {
+                                        echo '<li class="form-material"><input type="text" name="response['.$key.']" class="form-control" value="'.$choice['text'].'"/></li>';
+                                    }
+                                    ?>
+                                </ol>
                                 <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('startDate'));?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('End Date');?></label>
-                                <?php echo $this->formElement($form->get('endDate')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('endDate'));?>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group  <?php echo !empty($form->get('country')->getMessages())?'has-error':'';?> <?php echo !empty($form->get('city')->getMessages())?'has-error':'';?>">
-                        <div class="col-md-6">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Country');?></label>
-                                <?php echo $this->formElement($form->get('country')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('country'));?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('City');?></label>
-                                <?php echo $this->formElement($form->get('city')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('city'));?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group  <?php echo !empty($form->get('address')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-12">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Address');?></label>
-                                <?php echo $this->formElement($form->get('address')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('address'));?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group  <?php echo !empty($form->get('picture')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-12">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Image/Logo');?></label>
-                                <?php echo $this->formElement($form->get('picture')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('picture'));?>
-                                </div>
-                                <img src="<?= $this->url('images', ['action'=>'file'], ['query'=>['name'=> $form->get('picture')->getValue(), 'thumbnail'=>true]]); ?>" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="block">
-                <div class="block-header">
-                    <h3 class="block-title"><?php echo $this->translate('Organizer contact');?></h3>
-                    <!--<<ul class="block-options">
-                        <li>
-                            <a type="button" ><i class="si si-users"></i> Add user</a>
-                        </li>
-                    </ul>-->
-                </div>
-                <div class="block-content block-content-narrow">
-                    <div class="form-group <?php echo !empty($form->get('organizer_contact')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-12">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Name');?></label>
-                                <?php echo $this->formElement($form->get('organizer_contact')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('organizer_contact'));?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                 
-                </div>
-            </div>
-            <div class="block">
-                <div class="block-header">
-                    <h3 class="block-title"><?php echo $this->translate('Social network');?></h3>
-                    <!--<ul class="block-options">
-                        <li>
-                            <button type="button"><i class="si si-settings"></i></button>
-                        </li>
-                    </ul>-->
-                </div>
-                <div class="block-content block-content-narrow">
-                    <div class="form-group  <?php echo !empty($form->get('facebook')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-12">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Facebook');?></label>
-                                <?php echo $this->formElement($form->get('facebook')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('facebook'));?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                   
-                </div>
-                <div class="block-content block-content-narrow">
-                    <div class="form-group  <?php echo !empty($form->get('twitter')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-12">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Twitter');?></label>
-                                <?php echo $this->formElement($form->get('twitter')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('twitter'));?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                   
-                </div>
-                <div class="block-content block-content-narrow">
-                    <div class="form-group  <?php echo !empty($form->get('twitterHashTag')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-12">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Twitter #');?></label>
-                                <?php echo $this->formElement($form->get('twitterHashTag')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('twitterHashTag'));?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                   
-                </div>
-                <div class="block-content block-content-narrow">
-                    <div class="form-group  <?php echo !empty($form->get('instagram')->getMessages())?'has-error':'';?>">
-                        <div class="col-sm-12">
-                            <div class="form-material">
-                                <label><?php echo $this->translate('Instagram');?></label>
-                                <?php echo $this->formElement($form->get('instagram')); ?>
-                                <div class="help-block text-right animated fadeInDown form-error">
-                                    <?php echo $this->formElementErrors($form->get('instagram'));?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                   
-                </div>
-            </div>
-            <div class="block">
-                <div class="block-header">
-                    <h3 class="block-title"><?php echo $this->translate('Event settings');?></h3>
-                    <!--<ul class="block-options">
-                        <li>
-                            <button type="button"><i class="si si-settings"></i></button>
-                        </li>
-                    </ul>-->
-                </div>
-                <div class="block-content block-content-narrow">
                     <div class="form-group <?php echo !empty($form->get('status')->getMessages())?'has-error':'';?>">
                         <div class="col-sm-12">
                             <div class="form-material">
@@ -261,7 +91,7 @@ $form->prepare();
                     <div class="form-group text-right">
                         <?php echo $this->formElement($form->get('csrf')); ?>
                         <?php echo $this->formSubmit($form->get('submit'));?>
-                    </div>                   
+                    </div>     
                 </div>
             </div>
         </div>

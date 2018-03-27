@@ -499,17 +499,18 @@
         <!-- END Page Container -->
         <?php 
             print $this->inlineScript()
-                    ->appendFile($this->basePath() . '/js/core/jquery.min.js')
-                    ->appendFile($this->basePath() . '/js/core/bootstrap.min.js')
-                    ->appendFile($this->basePath() . '/js/core/jquery.slimscroll.min.js')
-                    ->appendFile($this->basePath() . '/js/core/jquery.scrollLock.min.js')
-                    ->appendFile($this->basePath() . '/js/core/jquery.appear.min.js')
-                    ->appendFile($this->basePath() . '/js/core/jquery.countTo.min.js')
-                    ->appendFile($this->basePath() . '/js/core/jquery.placeholder.min.js')
-                    ->appendFile($this->basePath() . '/js/core/js.cookie.min.js')
-                    ->appendFile($this->basePath() . '/js/plugins/jquery-raty/jquery.raty.min.js')
-                    ->appendFile($this->basePath() . '/js/app.js')
-                    ->appendFile($this->basePath() . '/js/custom/pages/rating.js')
+                    ->prependFile($this->basePath() . '/js/custom/pages/rating.js')
+                    ->prependFile($this->basePath() . '/js/app.js')
+                    ->prependFile($this->basePath() . '/js/plugins/jquery-raty/jquery.raty.min.js')
+                    ->prependFile($this->basePath() . '/js/core/js.cookie.min.js')
+                    ->prependFile($this->basePath() . '/js/core/js.cookie.min.js')
+                    ->prependFile($this->basePath() . '/js/core/jquery.placeholder.min.js')
+                    ->prependFile($this->basePath() . '/js/core/jquery.countTo.min.js')
+                    ->prependFile($this->basePath() . '/js/core/jquery.appear.min.js')
+                    ->prependFile($this->basePath() . '/js/core/jquery.scrollLock.min.js')
+                    ->prependFile($this->basePath() . '/js/core/jquery.slimscroll.min.js')
+                    ->prependFile($this->basePath() . '/js/core/bootstrap.min.js')
+                    ->prependFile($this->basePath() . '/js/core/jquery.min.js');
         ?>
         <script>
             jQuery(function() {

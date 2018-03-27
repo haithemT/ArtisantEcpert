@@ -31,7 +31,7 @@ class PollForm extends Form
         ]);
         $this->add([
             'type' => Element\Collection::class,
-            'name' => 'responses',
+            'name' => 'response',
             'options' => [
                 'label' => 'Response',
                 'count' => 2,

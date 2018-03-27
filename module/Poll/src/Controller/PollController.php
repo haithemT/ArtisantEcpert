@@ -63,7 +63,7 @@ class PollController extends AbstractActionController
         $poll->exchangeArray($form->getData());
    
         $poll->created_by=$this->identity()['id']; 
-        $this->table->savePoll($poll);
+        $this->table->addPoll($poll);
         return $this->redirect()->toRoute('poll');
     }
 
@@ -86,10 +86,23 @@ class PollController extends AbstractActionController
 
         $form = new PollForm();
         $form->bind($poll);
+        $pollStatusList = [
+            'active'        => $this->translator()->translate('Active'),
+            'archived'      => $this->translator()->translate('Archived'),
+            'scheduled'     => $this->translator()->translate('Scheduled')
+        ];
+        $eventsList = $this->eventTable->fetchAll();
+        $eventsListOptions = array_map(function($e){
+            return array('value' => $e['id'], 'label' => $e['eventName']);
+        }, $eventsList);
+
+        $form->get('status')->setAttribute('options',$pollStatusList);
+        $form->get('event')->setAttribute('options',$eventsListOptions);
         $form->get('submit')->setAttribute('value', 'Edit');
         $form->get('status')->setValue($poll->status);
+        $form->get('event')->setValue($poll->event_id);
         $request = $this->getRequest();
-        $viewData = ['id' => $id, 'form' => $form];
+        $viewData = ['id' => $id, 'form' => $form, 'response' => $poll->response];
 
         if ( ! $request->isPost()) {
             return $viewData;
@@ -102,7 +115,7 @@ class PollController extends AbstractActionController
             return $viewData;
         }
         $poll->updated_by=$this->identity()['id']; 
-        $this->table->savePoll($poll);
+        $this->table->updatePoll($poll);
 
         // Redirect to polls list
         return $this->redirect()->toRoute('poll', ['action' => 'index']);

@@ -19,7 +19,7 @@ class Poll implements InputFilterAwareInterface
     public $last_updated;
     public $created;
     public $created_by;
-    public $responses;
+    public $response;
     
     private $inputFilter;
     
@@ -33,7 +33,7 @@ class Poll implements InputFilterAwareInterface
         $this->last_updated         = (isset($data['last_updated'])) ? $data['last_updated'] : null;
         $this->created              = (isset($data['created'])) ? $data['created'] : null;
         $this->created_by           = (isset($data['created_by'])) ? $data['created_by'] : null;
-        $this->responses             = (isset($data['responses'])) ? $data['responses'] : null;
+        $this->response             = (isset($data['response'])) ? $data['response'] : null;
     }   
     
     public function getArrayCopy()
@@ -46,7 +46,7 @@ class Poll implements InputFilterAwareInterface
             'last_updated'          => $this->last_updated,
             'created'               => $this->created,
             'created_by'            => $this->created_by,
-            'responses'             => $this->responses,
+            'response'              => $this->response,
         ];
     }
     

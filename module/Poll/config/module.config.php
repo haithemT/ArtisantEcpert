@@ -40,4 +40,14 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+    'filesLoading' => array(
+        'Poll' => array(
+            'scripts' => array(
+                '/js/app/poll/poll.js?v='.rand(1,100000000),
+            ),
+            // 'styles' => array(
+            //     '/css/pages/po.css?v='.rand(1,100000000),
+            // ),
+        ),
+    ),
 ];

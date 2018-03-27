@@ -49,10 +49,9 @@ $this->headTitle($title);
                                 <td>
                                     <ol>
                                         <?php
-                                            if($poll['responses']){
-                                                $choices = json_decode($poll['responses']);
-                                                foreach ($choices as $choice) {
-                                                    echo '<li>'.$choice.'</li>';
+                                            if($poll['response']){
+                                                foreach ($poll['response'] as $choice) {
+                                                    echo '<li>'.$choice['text'].'</li>';
                                                 }
                                             }
                                         ?>

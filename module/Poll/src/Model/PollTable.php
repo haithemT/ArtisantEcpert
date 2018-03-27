@@ -6,6 +6,8 @@ use Zend\Db\TableGateway\TableGatewayInterface;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Insert;
+use Zend\Db\Sql\Update;
+
 class PollTable
 {
     private $tableGateway;
@@ -17,9 +19,10 @@ class PollTable
     public $created;
     public $created_by;
     
-    public function __construct(TableGatewayInterface $tableGateway)
+    public function __construct(TableGatewayInterface $tableGateway, ResponseTable $responseTable)
     {
         $this->tableGateway = $tableGateway;
+        $this->responseTable = $responseTable;
     }
 
     public function fetchAll()
@@ -31,6 +34,7 @@ class PollTable
         $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
         $resultSet = $statement->execute();
         foreach ($resultSet as $row) {
+            $row['response'] = $this->responseTable->fetchAll($row['id']);
             $rows[] = $row;
         }
         return $rows;
@@ -46,30 +50,45 @@ class PollTable
         $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($select);
         $resultSet = $statement->execute();
         $poll->exchangeArray($resultSet->current());
+        $poll->response = $this->responseTable->fetchAll($id);
         return $poll;
     }
 
-    public function savePoll(Poll $poll)
+    public function addPoll(Poll $poll)
     {
+        //echo '<pre>';print_r($poll);die;
+        $connection = null;
         $data = [
             'id'                    => $poll->id,
             'question'              => $poll->question,
             'status'                => $poll->status,
             'event_id'              => $poll->event_id,
             'created'               => new Expression('NOW()'),
+            'last_updated'          => new Expression('NOW()'),
             'created_by'            => $poll->created_by,
         ];
         try {
-            $connection = $this->dbAdapter->getDriver()->getConnection();
+            $connection = $this->tableGateway->getAdapter()->getDriver()->getConnection();
             $connection->beginTransaction();
             $insert = new Insert();
             $insert->into('poll')->values($data);
             $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($insert);
             $insertedID = $statement->execute()->getGeneratedValue();
-            // iinsert into response table
-            
-            
-            $connection->commit();
+            // insert into responses tables with new pollID
+            if($insertedID) {
+                foreach($poll->response as $rs) {
+                    $response =new Response();
+                    $d = [
+                        'poll_id'   => $insertedID,
+                        'text'      => $rs,
+                        'count'     => 0,
+                    ];
+                    $response->exchangeArray($d);
+                    $this->responseTable->saveResponse($response);
+                }
+                $connection->commit();
+            }
+            return 1; 
         } catch (\Exception $e) {
             if ($connection instanceof \Zend\Db\Adapter\Driver\ConnectionInterface) {
                 $connection->rollback();
@@ -77,19 +96,54 @@ class PollTable
             
             /* Other error handling */
         }
-        $id = (int) $poll->id;
-
-        if ($id === 0) {
-
-            $this->tableGateway->insert($data);
-            return 1;
-        }
-
-        if (! $this->getPoll($id)) {
-            throw new RuntimeException(sprintf('Cannot update post with identifier %d; does not exist',$id));
-        }
-        $this->tableGateway->update($data, ['id' => $id]);
     }
+
+    public function updatePoll(Poll $poll)
+    {
+        $connection = null;
+        $data = [
+            'question'              => $poll->question,
+            'status'                => $poll->status,
+            'event_id'              => $poll->event_id,
+            'last_updated'          => new Expression('NOW()'),
+        ];
+        try {
+            $connection = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connection->beginTransaction();
+            $update = new Update();
+            $update->table('poll');
+            $update->set($data);
+            $update->where->equalTo('poll.id', $poll->id); 
+            $statement = $this->tableGateway->getSql()->prepareStatementForSqlObject($update);
+            if($poll->response) {
+                $deleted = $this->responseTable->deletePollResponses($poll->id);
+                $updated = $statement->execute()->getAffectedRows();
+                // insert into responses tables with new pollID
+                foreach($poll->response as $rs) {
+                    $response = new Response();
+                    $d = [
+                        'poll_id'   => $poll->id,
+                        'text'      => $rs,
+                        'count'     => 0,
+                    ];
+                    $response->exchangeArray($d);
+                    $this->responseTable->saveResponse($response);
+                }
+                $connection->commit();
+                return 1;
+            } else {
+                throw new \Exception('you need to provide a response.');
+            }
+
+        } catch (\Exception $e) {
+            if ($connection instanceof \Zend\Db\Adapter\Driver\ConnectionInterface) {
+                $connection->rollback();
+            }
+            
+            /* Other error handling */
+        }
+    }
+
 
     public function deletePoll($id)
     {

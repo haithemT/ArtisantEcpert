@@ -27,13 +27,24 @@ class Module implements ConfigProviderInterface
             'factories' => [
                 Model\PollTable::class => function($container) {
                     $tableGateway = $container->get(Model\PollTableGateway::class);
-                    return new Model\PollTable($tableGateway);
+                    $responseTable = $container->get(Model\ResponseTable::class);
+                    return new Model\PollTable($tableGateway,$responseTable);
                 },
                 Model\PollTableGateway::class => function ($container) {
                     $dbAdapter = $container->get(AdapterInterface::class);
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Model\Poll());
                     return new TableGateway('poll', $dbAdapter, null, $resultSetPrototype);
+                },
+                Model\ResponseTable::class => function($container) {
+                    $tableGateway = $container->get(Model\ResponseTableGateway::class);
+                    return new Model\ResponseTable($tableGateway);
+                },
+                Model\ResponseTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Response());
+                    return new TableGateway('response', $dbAdapter, null, $resultSetPrototype);
                 },
             ],
         ];

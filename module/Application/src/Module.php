@@ -99,7 +99,7 @@ class Module
         if ($filesLoadingConfig && isset($filesLoadingConfig[$module])) {
             $scriptsList = isset($filesLoadingConfig[$module]['scripts']) ? $filesLoadingConfig[$module]['scripts'] : array();
             //load view helper manager
-            $viewHelperManager = $sm->get('viewhelpermanager');
+            $viewHelperManager = $sm->get('ViewHelperManager');
             $inlineScript = $viewHelperManager->get('inlineScript');
             $basePathPlugin = $viewHelperManager->get('basePath');
             $basePath = $basePathPlugin();
@@ -118,7 +118,7 @@ class Module
         if ($filesLoadingConfig && isset($filesLoadingConfig[$module])) {
             $stylesList = isset($filesLoadingConfig[$module]['styles']) ? $filesLoadingConfig[$module]['styles'] : array();
             //load view helper manager
-            $viewHelperManager = $sm->get('viewhelpermanager');
+            $viewHelperManager = $sm->get('ViewHelperManager');
             $headLink = $viewHelperManager->get('headLink');
             $basePathPlugin = $viewHelperManager->get('basePath');
             $basePath = $basePathPlugin();
